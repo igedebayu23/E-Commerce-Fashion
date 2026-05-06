@@ -15,6 +15,7 @@ services:
       - STOREFRONT_PROD_URL=${STOREFRONT_PROD_URL}
       - ADMIN_PROD_URL=${ADMIN_PROD_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
       - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-novure-internal-mesh-key-2026}
     depends_on:
       - commerce-service
