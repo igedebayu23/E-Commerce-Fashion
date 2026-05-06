@@ -2,48 +2,49 @@
 
 ## 1. Instruksi dan Panduan Teknis Mendalam
 
-Dokumen ini memaparkan aturan mikroskopik untuk memodifikasi `api-gateway`. Gateway (pada `port 8000`) adalah jantung dari sistem E-Commerce ini. Satu kesalahan konfigurasi proksi berpotensi menyebabkan kebocoran data silang layanan atau serangan eksfiltrasi.
+Dokumen ini adalah mandat operasi untuk `api-gateway`. Gateway ini bertindak sebagai **Backend for Frontend (BFF)**, penjaga keamanan, dan pengatur lalu lintas tunggal untuk seluruh ekosistem.
 
 ### Arsitektur BFF (Backend for Frontend)
-API Gateway ini menerapkan pola isolasi lalu lintas yang ketat:
-- Konsumen akhir (*storefront*) dan pengelola (*admin*) memanggil rute turunan yang diisolasi (mis. `/api/storefront/*` vs `/api/admin/*`).
-- Modul internal di belakang gateway (`commerce-service`, `admin-service`, `customer-service`) adalah layanan *microservice* modular (di-deploy dalam Docker) yang di-proksi oleh gateway.
+- **Isolasi Rute**: Pisahkan jalur `/api/storefront/*` (untuk pembeli) dan `/api/admin/*` (untuk pengelola) secara modular.
+- **Proxying (http-proxy-middleware v3)**: 
+  - Gunakan pabrik `proxyOptions` di `src/proxies/common.proxy.ts`. 
+  - Wajib memanggil `fixRequestBody(proxyReq, req)` karena penggunaan middleware `express.json()`.
+- **Path Rewriting**: Tangani translasi URL publik yang ramah (mis. `/api/admin/auth`) ke rute internal yang teknis (mis. `/api/admin/management/auth`) di level proksi.
 
-### Panduan Manajemen Proksi (`http-proxy-middleware` v3)
-Semua konfigurasi proksi **harus mewarisi (*extend*)** fungsi `proxyOptions` dari `src/proxies/common.proxy.ts`. 
-- **`fixRequestBody`**: Karena Gateway menggunakan `express.json()` (untuk membaca body guna validasi Joi), *stream* data `req.body` telah dikonsumsi. Fungsi bawaan `fixRequestBody` dari modul proxy dipanggil dalam *hook* `onProxyReq` untuk menyuntikkan ulang (`re-stringify`) *body JSON* sebelum diteruskan ke *microservice* hilir. Jangan pernah menghapus logika ini.
-- **Cookies & Headers Validation**: Gateway bertanggung jawab menyebarkan cookie `novure_jwt` dan header terdekripsi `x-user-id` serta `x-user-role`. Jika proxy kustom dibuat, penyalinan header ini wajib disertakan.
-
-### Protokol Keamanan Tingkat Lanjut
-- **Otentikasi JWT (`src/middlewares/auth.ts`)**: 
-  - Mencari token berurutan dari 1) `Authorization: Bearer` lalu 2) cookie `novure_jwt`.
-  - Jika token tidak valid atau kadaluwarsa, wajib mengembalikan kode `401 Unauthorized` dengan struktur JSON amplop (terdapat `{ success: false }`).
-- **Internal Service Mesh (`x-internal-key`)**:
-  - Antar-microservice sering kali perlu melakukan panggilan sinkron. Daripada layanan membuat JWT palsu, layanan internal memanggil API Gateway dengan menyertakan header `x-internal-key` (sesuai nilai `process.env.INTERNAL_SERVICE_KEY`).
-  - Middleware otentikasi akan mengabaikan pengecekan JWT *(bypass)* jika kunci internal ini tervalidasi. Jangan pernah membocorkan kunci ini ke *frontend client*.
-- **Validasi Permintaan (Joi)**:
-  - Sebelum diteruskan (di-proksi) ke layanan hilir, rute-rute publik spesifik memanggil `validate(schema)` dari `src/middlewares/validate.ts`.
-  - Jika format `req.body` salah, gateway akan memblokirnya dengan `400 Bad Request` beserta detail struktur (*path*) kesalahannya. Semua skema validasi wajib merujuk ke modul *shared* `@novure/contracts`.
+### Protokol Keamanan & Validasi
+- **CORS Hardening**: Hanya izinkan origin yang terdaftar di `env.ALLOWED_ORIGINS`. Localhost diizinkan hanya pada mode development.
+- **Autentikasi JWT**: Verifikasi token secara terpusat. Teruskan identitas ke layanan hilir via header `x-user-id` dan `x-user-role`.
+- **Internal Service Mesh**: Validasi header `x-internal-key` terhadap `INTERNAL_SERVICE_KEY`. Ini memungkinkan layanan internal (seperti `customer-service`) berkomunikasi via gateway secara aman.
+- **Validasi Joi**: Semua rute mutasi (POST/PUT/PATCH) wajib memiliki middleware `validate(schema)` menggunakan skema dari `@novure/contracts`.
 
 ---
 
 ## 2. Kondisi Saat Ini (Source of Truth)
 
-Inilah topologi lengkap dari layanan API Gateway saat ini:
+### Konfigurasi & Core (`src/`)
+- **`config/env.ts`**: Validasi ketat terhadap seluruh variabel lingkungan yang dibutuhkan.
+- **`app.ts`**: Instansiasi Express dengan CORS terproteksi dan parser JSON.
+- **`routes/index.ts`**: Hub pusat yang mendaftarkan seluruh sub-router BFF.
 
-### Struktur Direktori Inti
-- `config/`
-  - `env.ts`: Satu-satunya titik validasi dan pengumpulan *Environment Variables* (PORT, JWT_SECRET, target URL microservices, dan daftar *Whitelist* CORS). Menggunakan metode ini untuk mencegah *TypeError* `undefined` saat *runtime*.
-- `src/`
-  - `app.ts`: Titik pangkal (Entry point) instansiasi aplikasi Express. Di sinilah terpasang fungsi CORS tingkat tinggi, *body parser*, dan endpoint `/health` (mem-ping semua microservice untuk memeriksa ketersediaan sistem penuh secara simultan).
-- `src/middlewares/`
-  - `auth.ts`: Middleware validasi JWT dan verifikasi Mesh internal.
-  - `validate.ts`: Fungsi *High-order* yang menerima instansi objek Joi dan mengembalikan middleware Express standar.
-- `src/proxies/`
-  - `common.proxy.ts`: Pabrik opsi proksi global (pengatur `onProxyReq`, penanganan *Fix Body*, dan log kegagalan `502 Bad Gateway`).
-  - `admin.proxy.ts`: Konfigurasi koneksi ke `ADMIN_SERVICE_URL`. Mendefinisikan manipulasi *rewrite* seperti `adminAuthProxy` (mengubah pemanggilan `/api/admin/auth` menjadi `/api/admin/management/auth`).
-  - `commerce.proxy.ts`: Menangani perutean produk, katalog, dan *checkout* ke URL e-commerce inti. Memodifikasi prefix `/api/storefront/` menjadi `/api/`.
-  - `geography.proxy.ts`: Proksi passthrough transparan untuk layanan *Emsifa* API Wilayah Indonesia. Menangani isu lintas-domain (CORS) di *client-side*.
-- `src/routes/`
-  - Pola hirarki: Indeks *root* (`index.ts`) mendaftarkan router berdasarkan perannya (mis. `router.use('/storefront', storefrontCatalogRoutes)`).
-  - Terdapat pemisahan jelas antara rute aman (`authenticateJWT` diaktifkan untuk `/cart` dan `/orders`) dan rute terbuka (login, registrasi).
+### Hierarki Rute Modular
+- **`routes/storefront/`**: 
+  - `auth.routes.ts`: Validasi login/register.
+  - `cart.routes.ts`: Proxy keranjang belanja.
+  - `catalog.routes.ts`: Proxy produk & kategori (Akses Publik).
+  - `checkout.routes.ts`: Validasi inisiasi pembayaran & webhook.
+  - `account.routes.ts`: Manajemen profil user.
+- **`routes/admin/`**:
+  - `users.routes.ts`: Otentikasi admin.
+  - `products.routes.ts`: Manajemen inventaris (dengan validasi Joi ketat).
+  - `orders.routes.ts`: Manajemen pesanan & analitik.
+  - `management.routes.ts`: Pengaturan sistem & logistik.
+
+### Proksi Layanan Hilir (`src/proxies/`)
+- `commerce.proxy.ts`: Merutekan ke port **3001**.
+- `admin.proxy.ts`: Merutekan ke port **4001** (dan menangani rewrite ke `/management`).
+- `geography.proxy.ts`: Menangani passthrough ke API *Emsifa* eksternal.
+
+### Middleware Terpusat
+- `auth.ts`: Logika verifikasi ganda (JWT & Internal Key).
+- `validate.ts`: Pabrik middleware Joi.
+- `error-handler.ts`: Format error JSON tunggal untuk seluruh kegagalan Gateway.

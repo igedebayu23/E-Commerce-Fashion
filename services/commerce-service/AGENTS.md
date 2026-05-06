@@ -2,31 +2,46 @@
 
 ## 1. Instruksi dan Panduan Teknis Mendalam
 
-Dokumen ini adalah spesifikasi arsitektur untuk `commerce-service`. Layanan ini bertanggung jawab atas domain produk, kategori, ulasan, dan kalkulasi logistik.
+Dokumen ini adalah spesifikasi arsitektur tingkat rendah untuk `commerce-service`. Layanan ini bertanggung jawab atas domain produk, kategori, ulasan, dan kalkulasi logistik.
 
-### Arsitektur: Layered Architecture
+### Arsitektur Inti: Layered Architecture (Murni API)
 Layanan ini menggunakan pola desain berlapis untuk pemisahan tanggung jawab yang jelas:
-- **Routes**: Terletak di `src/routes/`. Hanya bertanggung jawab untuk definisi endpoint dan pemetaan middleware.
-- **Controllers**: Terletak di `src/controllers/`. Menangani orkestrasi request/response, ekstraksi data dari `req`, dan memanggil layer Service.
-- **Services**: Terletak di `src/services/`. Berisi logika bisnis murni, perhitungan, dan aturan validasi tingkat tinggi.
-- **DB Client**: Terletak di `src/db/client.ts`. Satu-satunya titik akses untuk instance Prisma.
+- **Routes (`src/routes/`)**: Hanya bertanggung jawab untuk definisi endpoint Express dan pemetaan middleware (seperti validasi Joi). Dilarang memasukkan logika bisnis di sini.
+- **Controllers (`src/controllers/`)**: Bertindak sebagai orkestrator tipis. Mengambil data dari `req` (params, query, body), memanggil layer Service, dan mengembalikan respon dalam amplop `ApiResponse` standar.
+- **Services (`src/services/`)**: **Pusat Logika Bisnis**. Seluruh perhitungan, manipulasi data, dan aturan validasi tingkat tinggi wajib diletakkan di sini agar dapat diuji secara mandiri (*Unit Testable*).
+- **Database Client (`src/db/client.ts`)**: Satu-satunya titik akses untuk instance Prisma yang diimpor dari `@novure/database`.
 
-### Standar Pengembangan
-- **Zero UI Logic**: Dilarang memasukkan logika rendering atau elemen frontend di sini. Balasan harus selalu berupa JSON.
-- **Validasi Joi**: Gunakan skema validasi Joi untuk setiap input non-GET.
-- **Error Handling**: Gunakan blok try-catch di level controller dan kembalikan status code yang tepat (400 untuk input salah, 404 untuk data tidak ada, 500 untuk sistem).
+### Standar Pengembangan API
+- **Zero UI Logic**: Dilarang keras memasukkan logika rendering atau elemen frontend. Balasan harus selalu berupa JSON murni.
+- **OpenAPI Compliance**: Gunakan amplop respon standar: `{ success: true, data: ... }` atau `{ success: false, error: "pesan" }`.
+- **Error Handling**: Semua kegagalan harus ditangkap oleh blok `try-catch` di level Controller dan diteruskan ke middleware `errorHandler` via `next(err)`.
+
+### Keamanan Internal (Mesh)
+- Layanan ini dipanggil secara eksklusif oleh API Gateway.
+- Verifikasi header `x-internal-key` (sesuai `INTERNAL_SERVICE_KEY`) wajib dilakukan untuk pemanggilan antar-layanan (seperti dari `customer-service` untuk validasi stok produk).
 
 ---
 
 ## 2. Kondisi Saat Ini (Source of Truth)
 
 ### Struktur Direktori (`src/`)
-- `controllers/`: `product.controller.ts`, `category.controller.ts`, `review.controller.ts`, `shipping.controller.ts`, `analytics.controller.ts`, `health.controller.ts`.
-- `routes/`: Menghubungkan endpoint Express ke controller di atas.
-- `db/`: Berisi `client.ts` untuk koneksi Prisma.
-- `middleware/`: Middleware kustom (auth, validation).
-- `utils/`: Fungsi pembantu umum.
+- **`controllers/`**: 
+  - `product.controller.ts`: Orchestrator produk & pencarian.
+  - `category.controller.ts`: Manajemen grup katalog.
+  - `review.controller.ts`: Pengelolaan ulasan pengguna.
+  - `shipping.controller.ts`: Kalkulasi biaya logistik (Haversine Formula).
+  - `analytics.controller.ts`: Agregasi data penjualan produk.
+  - `health.controller.ts`: Pengecekan konektivitas basis data.
+- **`services/`**: Implementasi logika bisnis untuk seluruh domain di atas (misal: `ProductService.ts`).
+- **`routes/`**: Pemetaan endpoint Express (misal: `product.routes.ts`).
+- **`db/`**: Koneksi Prisma terpusat.
+- **`middleware/`**: 
+  - `error-handler.ts`: Penangkap error global dengan format JSON.
+- **`utils/`**: Helper keamanan seperti `password.ts` (hashing).
+- **`dtos/`**: Kontrak bentuk data produk (`product.dto.ts`).
 
 ### Integrasi
-- **Database**: Terhubung ke PostgreSQL (via `@novure/database`).
-- **Networking**: Berjalan pada port **3001** di dalam container Docker. Dipanggil secara eksklusif oleh API Gateway.
+- **Framework**: Express 5.
+- **Database**: PostgreSQL via `@novure/database`.
+- **Runtime**: Node.js 20+ (Eksekusi via `tsx` di lingkungan dev).
+- **Port**: **3001** (Internal Mesh).

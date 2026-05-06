@@ -2,30 +2,43 @@
 
 ## 1. Instruksi dan Panduan Teknis Mendalam
 
-Dokumen ini adalah spesifikasi arsitektur untuk `customer-service`. Layanan ini bertanggung jawab atas domain pelanggan, akun, keranjang, checkout, dan riwayat pesanan.
+Dokumen ini adalah spesifikasi arsitektur untuk `customer-service`. Layanan ini adalah modul tersibuk yang menangani seluruh siklus hidup pelanggan: identitas, profil, keranjang, hingga proses checkout.
 
-### Arsitektur: Layered Architecture
-Layanan ini menggunakan pola desain berlapis untuk pemisahan tanggung jawab yang jelas:
-- **Routes**: Terletak di `src/routes/`. Mendefinisikan endpoint Express dan memanggil controller.
-- **Controllers**: Terletak di `src/controllers/`. Menangani orkestrasi request/response dan memanggil layer Service atau DB.
-- **DB Client**: Terletak di `src/db/client.ts`. Akses Prisma terpusat.
+### Arsitektur Inti: Layered Architecture
+- **Routes (`src/routes/`)**: Memetakan rute publik (login/register) dan rute terlindungi (account/cart).
+- **Controllers (`src/controllers/`)**: Mengelola interaksi request/response dan pemanggilan Service.
+- **Services (`src/services/`)**: **Tempat tinggal Logika Bisnis**. 
+  - `CheckoutService`: Menangani integrasi Midtrans yang kompleks.
+  - `CartService`: Menangani hidrasi data produk dari layanan lain melalui Gateway.
+- **DB Client (`src/db/client.ts`)**: Satu-satunya pintu gerbang ke Prisma.
 
-### Keamanan & Integrasi
-- **JWT**: Validasi JWT dilakukan di Gateway, namun layanan ini juga memiliki middleware `authenticateJWT` sebagai pertahanan berlapis.
-- **Internal Service Mesh**: Menggunakan `x-internal-key` untuk memvalidasi permintaan antar layanan internal melalui Gateway.
-- **Midtrans**: Menangani integrasi Core API Midtrans untuk inisiasi transaksi dan webhook notifikasi.
+### Integrasi Pembayaran (Midtrans)
+- Seluruh logika **Midtrans Core API** (Charge, Status, Webhook) wajib diisolasi di dalam `CheckoutService`.
+- Pastikan verifikasi tanda tangan (*signature verification*) dilakukan pada setiap notifikasi webhook untuk mencegah serangan pemalsuan status transaksi.
+
+### Keamanan & Validasi
+- **Zero Trust**: Meskipun berada di belakang Gateway, gunakan middleware `authenticateJWT` untuk memverifikasi ulang identitas pengguna.
+- **Joi Validation**: Gateway melakukan validasi pertama, namun Service dapat melakukan validasi tambahan jika ada logika bisnis yang bergantung pada kondisi database.
 
 ---
 
 ## 2. Kondisi Saat Ini (Source of Truth)
 
 ### Struktur Direktori (`src/`)
-- `controllers/`: `auth.controller.ts`, `account.controller.ts`, `cart.controller.ts`, `checkout.controller.ts`, `orders.controller.ts`, `shipping.controller.ts`.
-- `routes/`: `account.ts`, `auth.ts`, `cart.ts`, `checkout.ts`, `orders.ts`, `shipping.ts`.
-- `db/`: `client.ts` (Prisma connection).
-- `middleware/`: `auth.ts` (JWT handling).
-- `utils/`, `dtos/`, `types/`: Folder pendukung arsitektur berlapis.
+- **`controllers/`**:
+  - `auth.controller.ts`: Pendaftaran dan login pelanggan.
+  - `account.controller.ts`: Alamat, metode pembayaran, dan profil.
+  - `cart.controller.ts`: Manajemen keranjang belanja asinkron.
+  - `checkout.controller.ts`: Inisiasi pembayaran.
+  - `orders.controller.ts`: Riwayat transaksi pelanggan.
+  - `shipping.controller.ts`: Pelacakan status kiriman pelanggan.
+- **`services/`**: Implementasi logika untuk seluruh modul di atas (misal: `AuthService.ts`).
+- **`dtos/`**: `customer.dto.ts`, `order.dto.ts` (Menjamin konsistensi data yang dikirim ke Frontend).
+- **`middleware/`**: `auth.ts` (JWT handling) dan `error-handler.ts`.
+- **`db/`**: Instansiasi Prisma klien.
 
 ### Integrasi
-- **Database**: PostgreSQL (via `@novure/database`).
-- **Networking**: Berjalan pada port **4002** di dalam Docker. Dipanggil oleh API Gateway pada rute `/api/storefront/*`.
+- **Framework**: Express 5.
+- **Database**: PostgreSQL (Prisma).
+- **Port**: **4002** (Internal Docker).
+- **Mesh Communication**: Memanggil `commerce-service` melalui API Gateway (8000) menggunakan `INTERNAL_SERVICE_KEY` untuk mengambil data produk terkini.

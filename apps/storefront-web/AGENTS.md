@@ -2,63 +2,43 @@
 
 ## 1. Instruksi dan Panduan Teknis Mendalam
 
-Dokumen ini adalah spesifikasi arsitektur tingkat rendah untuk semua agen AI dan pengembang yang memodifikasi `storefront-web`. Kegagalan mematuhi instruksi ini akan menyebabkan *build failure* atau kerentanan keamanan.
+Dokumen ini adalah spesifikasi arsitektur tingkat rendah untuk semua agen AI dan pengembang yang memodifikasi `storefront-web`. 
 
-### Arsitektur Inti: Murni Headless (Decoupled)
-- **Larangan Akses Database**: `storefront-web` adalah lapisan presentasi murni. Menginstal `@prisma/client`, `@supabase/supabase-js`, atau ORM lainnya di dalam `apps/storefront-web` adalah **pelanggaran arsitektur fatal**.
-- **Gateway sebagai Single Source of Truth**: Semua data (baik baca maupun tulis) harus melewati API Gateway (`http://localhost:8000` di lokal, atau internal docker networking `http://api-gateway:8000`).
+### Arsitektur Inti: Murni Headless (Presentation Layer)
+- **Larangan Akses Database Langsung**: `storefront-web` adalah lapisan presentasi. Dilarang menginstal atau menggunakan `@prisma/client` atau SDK database apapun. Semua interaksi data wajib melalui API Gateway (`:8000`).
+- **Pola BFF (Backend for Frontend)**: Frontend mengonsumsi endpoint yang telah dioptimalkan oleh Gateway (`/api/storefront/*`). Jangan pernah mencoba memanggil layanan backend (seperti port 3001 atau 4002) secara langsung.
 
-### Next.js 15: Komponen Server & Fetching
-- **Default Caching**: Pada Next.js 15, fungsi `fetch()` secara default adalah `no-store` (tidak di-cache).
-  - Jika Anda memerlukan caching untuk katalog produk statis, Anda harus secara eksplisit mendefinisikannya: `fetch(url, { cache: 'force-cache', next: { revalidate: 3600 } })`.
-- **Kredensial dan Sesi**:
-  - Di **Client Components**, gunakan `fetchOptions({ credentials: "include" })` agar browser otomatis mengirim `novure_jwt` (httpOnly cookie).
-  - Di **Server Components / Server Actions**, Anda wajib membaca cookie dari objek request menggunakan `import { cookies } from 'next/headers';` dan secara manual melampirkannya ke header `Cookie` pada pemanggilan API internal jika diperlukan.
-- **Server Actions (`use server`)**:
-  - Hanya letakkan Server Actions di direktori `src/lib/actions/`.
-  - Tangkap (*catch*) semua error di Server Action dan kembalikan objek standar `{ success: boolean, data?: any, error?: string }` untuk mencegah aplikasi *crash*. Jangan biarkan error *unhandled* bocor ke sisi klien.
+### Next.js 15 & React 19: Standar Modern
+- **Server-First Fetching**: Prioritaskan penggunaan Server Components untuk pengambilan data awal. 
+  - **Caching**: Next.js 15 menggunakan `no-store` secara default. Gunakan `cache: 'force-cache'` hanya untuk konten statis (mis. Footer, Header).
+- **Server Actions**: Letakkan di `src/lib/actions/`. Gunakan pola delegasi: Server Action memanggil `lib/api/` -> `lib/api` memanggil Gateway.
+- **Micro-interactions (UI/UX)**:
+  - Gunakan `framer-motion` untuk semua animasi. 
+  - **Kurva Animasi**: Wajib menggunakan kurva `[0.16, 1, 0.3, 1]` untuk kesan premium.
+  - **Image Optimization**: Gunakan komponen `<Image />` Next.js dengan properti `priority` untuk elemen LCP (Largest Contentful Paint) seperti Hero Image.
 
-### Panduan Tipe Data (TypeScript)
-- **No `any` Types**: Gunakan tipe `Record<string, unknown>` jika bentuk data dinamis, atau definisikan `interface` yang ketat. Penggunaan `any` tidak diizinkan.
-- **Type Guarding**: Saat menangkap error pada blok `catch (err: unknown)`, lakukan type guard `err instanceof Error ? err.message : "Unknown error"` sebelum merendernya.
-
-### Panduan Komponen Interaktif (React 19 Hooks)
-- **Hindari Cascading Renders**: Dilarang menggunakan `useEffect` yang secara sinkron memanggil `setState` yang hanya bergantung pada derivasi *props*. Gunakan `useMemo` untuk perhitungan turunan.
-- **Image Optimization**: Wajib menggunakan komponen `<Image />` dari `next/image` daripada `<img>` standar HTML. Jika URL gambar berasal dari Supabase Storage eksternal, pastikan domain tersebut sudah didaftarkan pada `remotePatterns` di dalam `next.config.ts`.
-
-### Panduan UI/UX (Editorial & High-Fidelity)
-- **Tipografi**: Gunakan variasi berat (*weight*) untuk menetapkan hierarki (contoh: 900 untuk judul hero, 700 untuk harga, 500 untuk deskripsi).
-- **Whitespace**: Desain *editorial* membutuhkan margin/padding yang berlimpah (seperti `padding: 4rem 0`). Jangan memadatkan elemen UI.
-- **Framer Motion**: Gunakan `motion.div` untuk transisi halaman lambat dan *staggered reveals*. Konfigurasi default kurva animasi: `transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}` (menggunakan kurva *smooth bezier* ala Apple/Linear).
+### Keamanan & State
+- **Cookie-Based Auth**: Jangan gunakan `localStorage`. Pastikan semua pemanggilan API menggunakan `credentials: "include"` untuk menyertakan `novure_jwt` otomatis.
+- **Form Validation**: Lakukan validasi sisi klien (Client-side) sebelum mengirim data ke Gateway untuk meningkatkan UX, namun tetap percayakan validasi final pada Joi di level Gateway.
 
 ---
 
 ## 2. Kondisi Saat Ini (Source of Truth)
 
-Berikut adalah pemetaan tepat dari sistem saat ini. Jangan berasumsi ada struktur lain.
+### Pemetaan Direktori (`src/`)
+- **`app/`**: Struktur rute berbasis file. Rute utama: `/catalogue`, `/login`, `/profile`.
+- **`features/`**: Unit fungsional mandiri.
+  - `catalogue/`: Menampilkan grid produk dan modal detail. (Ejaan: **`catalogue`**).
+  - `auth/`: Menangani alur login, register, dan manajemen profil.
+  - `checkout/`: Integrasi Map (Leaflet) dan alur pembayaran.
+- **`components/`**: Komponen atomik.
+  - `animations/`: Wadah untuk komponen visual berat (Wave, 3D Slider, Marquee).
+  - `atoms/`: Tombol, input, kartu produk dasar.
+- **`lib/api/`**: **Satu-satunya sumber data**. Berisi:
+  - `auth.ts`, `cart.ts`, `catalogue.ts`, `account.ts`, `orders.ts`, `shipping.ts`.
+- **`styles/`**: Seluruh file CSS. Menggunakan konvensi penamaan deskriptif (mis. `CatalogueWaveSection.module.css`).
 
-### Struktur Direktori (`src/`)
-- `app/`
-  - `(routing)`: Berisi file `page.tsx`, `layout.tsx`, `error.tsx`. Semuanya merender UI menggunakan komponen dari `features` atau `components`.
-  - `catalogue/`: Induk rute untuk daftar produk, termasuk sub-rute kompleks `cart/pembayaran/status/[orderId]`.
-- `features/`
-  - Isolasi domain yang tegas. Komponen yang menyimpan banyak *state* atau *logic* bisnis tidak boleh berada di `components/`.
-  - `auth/`: (Subfolder: `login`, `register`, `profile`). Menangani form otentikasi dan riwayat pesanan/alamat (*profile views*).
-  - `catalogue/`: Menggunakan ejaan British. Berisi `CatalogueGrid.tsx`, `ProductDetailModal.tsx`.
-  - `checkout/`: Berisi integrasi peta geolokasi (Leaflet) `LocationMap.tsx`.
-- `components/`
-  - `atoms/`: `AnimatedText.tsx`, `ProductCard.tsx`, `StatusPill.tsx`.
-  - `animations/`: `InfiniteMarquee.tsx`, `ImmersiveSlider3D.tsx`, `MultiColorWave.tsx`. (Folder ini menggantikan nama `features` lama yang bias).
-  - `layout/`: `Navbar.tsx`, `Footer.tsx`.
-- `styles/`
-  - Repositori CSS global. Tidak ada CSS Modules yang tersebar di luar folder ini. Prefix `.pv-` digunakan untuk gaya khusus *Profile Views*.
-- `context/`
-  - `AuthContext.tsx`, `CartContext.tsx`, `ProfileDataContext.tsx`. Menggunakan React Context untuk *state* global.
-- `lib/`
-  - `api/config.ts`: Sentralisasi pembacaan `process.env.NEXT_PUBLIC_API_URL` (atau fallback Gateway).
-  - `api/account.ts`, `auth.ts`, `cart.ts`, `catalogue.ts`, `orders.ts`, `shipping.ts`: Berisi fungsi asinkron (klien HTTP murni) untuk berinteraksi dengan API Gateway.
-  - `actions/`: Berisi Server Actions (`use server`) yang kemudian memanggil klien di `lib/api/`.
-
-### Integrasi Eksternal (Via Gateway)
-- **Midtrans**: Frontend tidak memiliki server-key Midtrans. Frontend memanggil `ordersApi.initiateMidtransCharge()` lalu menerima *Snap Token* atau detail Virtual Account, yang kemudian dirender di antarmuka `PaymentStatusPage`.
-- **Emsifa (Geografi)**: API eksternal wilayah Indonesia dipanggil melalui `getApiBaseUrl() + "/api/geography"` yang di-proxy oleh API Gateway (mencegah isu CORS dan pelacakan pihak ketiga).
+### State Arsitektur Saat Ini
+- **API Version**: Mengonsumsi API Gateway v2.2.0.
+- **Import Aliases**: Selalu gunakan `@/` untuk merujuk ke folder `src`.
+- **Typing**: Seluruh tipe data `any` telah dihapus dan diganti dengan antarmuka TypeScript yang ketat atau `Record<string, unknown>`.

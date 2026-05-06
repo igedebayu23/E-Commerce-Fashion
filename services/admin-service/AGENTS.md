@@ -2,28 +2,36 @@
 
 ## 1. Instruksi dan Panduan Teknis Mendalam
 
-Dokumen ini adalah spesifikasi arsitektur untuk `admin-service`. Layanan ini bertanggung jawab atas manajemen pengguna admin, pesanan, dan operasional logistik internal.
+Dokumen ini merupakan mandat arsitektural untuk `admin-service`. Layanan ini bertanggung jawab atas manajemen pengguna admin, operasional pesanan, dan manajemen logistik internal.
 
-### Arsitektur: Layered Architecture
-- **Routes**: `src/routes/`. Definisi endpoint Express.
-- **Controllers**: `src/controllers/`. Handler HTTP yang mendelegasikan logika ke Service.
-- **Services**: `src/services/`. Logika bisnis internal admin.
-- **DB Client**: `src/db/client.ts`. Akses Prisma terpusat.
+### Arsitektur Inti: Layered Architecture
+- **Routes (`src/routes/`)**: Definisi endpoint yang bersih, memisahkan rute manajemen internal dan rute *storefront-exposed*.
+- **Controllers (`src/controllers/`)**: Menangani parsing request dan pemetaan DTO sebelum dikirim ke client.
+- **Services (`src/services/`)**: Mengelola logika bisnis kompleks (seperti verifikasi password admin, perubahan status pesanan massal).
+- **DB Client (`src/db/client.ts`)**: Akses terpusat ke database PostgreSQL.
 
-### Keamanan Internal (Mesh)
-- Layanan ini menerima panggilan dari layanan lain (seperti `customer-service` untuk validasi pesanan).
-- Verifikasi header `x-internal-key` wajib dilakukan untuk endpoint non-publik antar layanan.
+### Protokol Keamanan
+- **Admin Authentication**: Menggunakan JWT. Rahasia token diambil dari `env.JWT_SECRET`.
+- **Internal Security**: Validasi header `x-internal-key` terhadap `INTERNAL_SERVICE_KEY` untuk memastikan integritas komunikasi antar-layanan di dalam cluster Docker.
+- **Standard Response**: Wajib mengembalikan respon sukses `200/201` atau error `400/401/404/500` dalam format JSON standar.
 
 ---
 
 ## 2. Kondisi Saat Ini (Source of Truth)
 
 ### Struktur Direktori (`src/`)
-- `controllers/`: `auth.controller.ts`, `order.controller.ts`, `shipping.controller.ts`.
-- `routes/`: `auth.routes.ts`, `order.routes.ts`, `shipping.routes.ts`.
-- `db/client.ts`: Instansiasi Prisma.
-- `lib/auth/`: Logika helper untuk token dan hashing password.
+- **`controllers/`**:
+  - `auth.controller.ts`: Manajemen sesi admin (Login, Logout, Me).
+  - `order.controller.ts`: Pengaturan rincian pesanan dan status.
+  - `shipping.controller.ts`: Manajemen kurir dan pelacakan resi internal.
+- **`services/`**: Berisi logika operasional seperti `OrderService.ts`.
+- **`routes/`**: `auth.routes.ts`, `order.routes.ts`, `shipping.routes.ts`.
+- **`dtos/`**: `dashboard.dto.ts` (Mendefinisikan bentuk data agregat untuk dashboard).
+- **`middleware/`**: `error-handler.ts` terpusat.
+- **`utils/`**: `password.ts` untuk verifikasi kredensial admin.
 
 ### Integrasi
+- **Framework**: Express 5.
 - **Database**: PostgreSQL (Prisma).
-- **Networking**: Berjalan pada port **4001** (internal). Dipanggil oleh API Gateway pada rute `/api/admin/management/*`.
+- **Port**: **4001** (Internal).
+- **BFF Alignment**: Di-mount oleh API Gateway pada jalur `/api/admin/management/*`.
