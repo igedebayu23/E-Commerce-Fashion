@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import UploadImage from '$lib/components/UploadImage.svelte';
+	import UploadImage from '@components/atoms/UploadImage.svelte';
 	
 	let imageUrl = $state('');
 </script>

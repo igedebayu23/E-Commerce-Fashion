@@ -1,8 +1,8 @@
 <script lang="ts">
 	let { data } = $props();
 	import { enhance } from '$app/forms';
-	import { STOREFRONT_URL } from '$lib/config';
-	import UploadImage from '$lib/components/UploadImage.svelte';
+	import { STOREFRONT_URL } from '@lib/api/config';
+	import UploadImage from '@components/atoms/UploadImage.svelte';
 
 	let imageUrl = $state('');
 

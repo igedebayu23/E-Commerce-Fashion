@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { supabase } from '$lib/supabase';
+  import { supabase } from '@lib/api/supabase';
   
   let { 
     bucket = 'products', 

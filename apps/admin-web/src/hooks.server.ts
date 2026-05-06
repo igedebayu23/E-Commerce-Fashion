@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { INTERNAL_API_URL } from '$lib/config';
+import { INTERNAL_API_URL } from '@lib/api/config';
 
 export const handle = async ({ event, resolve }) => {
     event.locals.user = null;

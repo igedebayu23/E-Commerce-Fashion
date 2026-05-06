@@ -1,5 +1,6 @@
 <script lang="ts">
-  import '../app.css';
+  import '@styles/globals.css';
+  import '@styles/admin.css';
   import { page } from '$app/stores';
   import { enhance } from '$app/forms';
   

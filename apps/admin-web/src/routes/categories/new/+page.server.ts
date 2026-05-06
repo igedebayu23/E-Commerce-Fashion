@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '$lib/config';
+import { API_BASE_URL } from '@lib/api/config';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions } from './$types';
 

@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '$lib/config';
+import { API_BASE_URL } from '@lib/api/config';
 import type { PageServerLoad } from './$types';
 
 const safeFetch = async (promise: Promise<Response>) => {

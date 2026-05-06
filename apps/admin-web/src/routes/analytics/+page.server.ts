@@ -1,4 +1,4 @@
-import { API_BASE_URL } from '$lib/config';
+import { API_BASE_URL } from '@lib/api/config';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {

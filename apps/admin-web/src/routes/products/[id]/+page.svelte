@@ -1,7 +1,7 @@
 <script lang="ts">
 	let { data } = $props();
 	import { enhance } from '$app/forms';
-	import UploadImage from '$lib/components/UploadImage.svelte';
+	import UploadImage from '@components/atoms/UploadImage.svelte';
 
 	let imageUrl = $state(data.product.imageUrl || '');
 </script>

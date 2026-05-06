@@ -1,4 +1,4 @@
-import { API_BASE_URL, INTERNAL_API_URL, PUBLIC_API_URL } from '$lib/config';
+import { API_BASE_URL, INTERNAL_API_URL, PUBLIC_API_URL } from '@lib/api/config';
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 

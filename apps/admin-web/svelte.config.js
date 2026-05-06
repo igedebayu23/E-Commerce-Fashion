@@ -13,6 +13,13 @@ const config = {
 		adapter: adapter(),
 		csrf: {
 			checkOrigin: false
+		},
+		alias: {
+			'@': './src',
+			'@components': './src/components',
+			'@features': './src/features',
+			'@styles': './src/styles',
+			'@lib': './src/lib'
 		}
 	}
 };
