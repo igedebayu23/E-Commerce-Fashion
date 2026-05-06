@@ -1,37 +1,30 @@
 # Admin Web Agent Guidelines (SvelteKit 2)
 
-This document serves as the foundational mandate for all AI agents working on the `admin-web` application.
+## 1. Current State (Source of Truth)
+- **Framework**: SvelteKit 2.
+- **Routing Hierachy**: Uses **Route Groups** to isolate layouts:
+    - **`(dashboard)`**: Contains `analytics`, `categories`, `orders`, and `products`. 
+    - **`(auth)`**: Contains `login` and `logout`.
+- **Naming Conventions**:
+    - **`features/products`**: Domain logic for catalog management uses the `products` name (not catalogue).
+- **Styling**: All CSS files are centralized in `src/styles/`. `globals.css` handles base styles, `admin.css` handles dashboard-specific UI.
+- **Data Layer**: `src/lib/api/` is modularized into `products.ts`, `orders.ts`, and `analytics.ts`. `DashboardAPI` in `dashboard.ts` orchestrates these for the overview page.
+- **Auth Implementation**: Logout is handled via `lib/auth/session.ts` and triggered by the `/logout` route.
 
-## 1. Architectural Philosophy: Headless First
-The admin dashboard is a **purely decoupled "Head"**. 
-- **Zero Direct DB Access**: Never import Prisma or any database client.
-- **Stateless Backend Communication**: Rely on the API Gateway or internal mesh URLs in `+page.server.ts`.
-- **Secure Auth**: Authentication is managed via sessions/cookies.
+## 2. Architectural Mandates
+- **Headless First**: No direct database access. Use `DashboardAPI` or domain clients in `+page.server.ts`.
+- **Modular Loaders**: loaders should remain thin, delegating complex data logic to the `lib/api` layer.
+- **Path Aliases**: Strictly use `@components`, `@features`, `@styles`, `@lib`, and `@/`.
+- **Cookie Policy**: SvelteKit 2 requires `path: '/'` for all cookie operations.
 
-## 2. Directory Structure (SvelteKit 2)
-Maintain the following standardized structure within `src/`:
-
-- **`routes/`**: File-based Routing.
-    - **Route Groups**: Use `(dashboard)` and `(auth)` groups to isolate layouts.
-    - **Server Loaders**: Use `+page.server.ts` to fetch data via `lib/api`.
-- **`features/`**: Domain-driven modules (`analytics`, `products`, `order`).
-- **`components/`**: Atomic Design (`atoms`, `molecules`, `organisms`).
-- **`styles/`**: Centralized CSS files in `src/styles/`.
-- **`lib/`**:
-    - **`api/`**: Modular API clients. All `fetch` logic must live here.
-    - **`auth/`**: Cookie management. Note: SvelteKit 2 requires `path: '/'` in `cookies.set/delete`.
-
-## 3. Styling & Imports
-- **Aliases**: Use `@components`, `@features`, `@styles`, `@lib`, and `@/`.
-- **Layouts**: Keep `+layout.svelte` files thin. Delegate UI logic to components.
-
-## 4. Import Conventions
-- Preferred order:
-    1. Svelte/SvelteKit imports
-    2. API Clients (`$lib/api` or `@lib/api`)
-    3. Components (`@components/...`)
-    4. Features (`@features/...`)
-    5. Styles (`@styles/...`)
+## 3. Directory Map
+- `routes/(dashboard)/`: Protected UI.
+- `routes/(auth)/`: Identity UI.
+- `features/`: `analytics`, `products`, `order`.
+- `components/`: `atoms`, `molecules`, `organisms`.
+- `lib/api/`: Dedicated API clients calling Gateway (:8000).
+- `lib/auth/`: Session management.
+- `styles/`: Global and local CSS.
 
 ---
-*Failure to follow these rules constitutes an architectural violation.*
+*Violation of these standards will lead to rejected pull requests.*

@@ -1,40 +1,32 @@
 # Storefront Web Agent Guidelines (Next.js 15)
 
-This document serves as the foundational mandate for all AI agents working on the `storefront-web` application.
+## 1. Current State (Source of Truth)
+- **Framework**: Next.js 15 (App Router).
+- **Core Structure**: The legacy `frontend/` directory has been deleted. All contents are consolidated directly under `src/`.
+- **Naming Conventions**:
+    - **`features/catalogue`**: Uses the `catalogue` (British) spelling consistently.
+    - **`components/animations`**: Legacy `components/features` was renamed here to avoid domain confusion.
+- **Styling**: All `.css` and `.module.css` files are centralized in `src/styles/`. Components and features are "style-less" in their local folders.
+- **Data Layer**: `src/lib/api/` contains modular, pure fetch clients (`auth.ts`, `cart.ts`, `catalogue.ts`, `account.ts`, `orders.ts`, `shipping.ts`). 
+- **Authentication**: JWT is stored only in **httpOnly cookies**. No `localStorage` is used for sensitive data.
 
-## 1. Architectural Philosophy: Headless First
-The storefront is a **purely decoupled "Head"**. 
-- **Zero Direct DB Access**: Never import Prisma or any database client. All data must come from the API Gateway.
-- **Stateless Backend Communication**: Rely on the API Gateway for business logic.
-- **Secure Auth**: Never use `localStorage` for JWT. Use `httpOnly` cookies managed by the API Gateway.
+## 2. Architectural Mandates
+- **Pure Headless**: Never import Prisma or database clients. All data must flow through the API Gateway (Port 8000).
+- **Absolute Imports**: Always use the `@/` alias (e.g., `import { X } from "@/components/atoms/X"`).
+- **Server Actions**: Located in `src/lib/actions/`. They must delegate business logic to the `lib/api` clients.
+- **Credentials**: Every fetch call MUST include `credentials: "include"`.
 
-## 2. Directory Structure
-Maintain the following standardized structure within `src/`:
-
-- **`app/`**: Next.js App Router.
-    - **Data Fetching**: Use `async` Server Components with `fetch`.
-    - **Caching**: Note that Next.js 15 defaults to `no-store` for many operations. Use `cache: 'force-cache'` only for static data.
-    - **Error Handling**: Use `error.tsx` and `not-found.tsx` for graceful degradation.
-- **`features/`**: Domain-driven modules (`auth`, `catalogue`, `checkout`).
-- **`components/`**: UI building blocks (atoms, animations, layout, sections).
-- **`styles/`**: ALL CSS and CSS Modules.
-- **`context/`**: Global React Context providers.
-- **`lib/`**:
-    - **`api/`**: Pure API clients. **Only place for fetch calls.**
-    - **`actions/`**: Next.js Server Actions. Must delegate to `lib/api`.
-
-## 3. Implementation Mandates (Next.js 15)
-- **Server Actions**: All Server Actions must be in `src/lib/actions/`. They default to `no-store`.
-- **Fetch**: Always use `credentials: "include"` in `lib/api` to support cookie-based sessions.
-- **Relative Imports**: Avoid deep relative imports. Always use the `@/` alias.
-
-## 4. Import Order
-1. React/Next.js built-ins
-2. Third-party libraries
-3. API Clients (`@/lib/api`)
-4. Features (`@/features`)
-5. Components (`@/components`)
-6. Styles (`@/styles`)
+## 3. Directory Map
+- `app/`: Routes, Layouts, Metadata.
+- `features/`: Business domain logic (`auth`, `catalogue`, `checkout`).
+- `components/`: 
+    - `atoms/`: Primitive UI.
+    - `animations/`: Motion components (Waves, Sliders).
+    - `layout/`: Navbar, Footer.
+    - `sections/`: Page building blocks.
+- `styles/`: Central CSS repository.
+- `context/`: React Context providers.
+- `lib/api/`: Pure API Gateway clients.
 
 ---
-*Failure to follow these rules constitutes an architectural violation.*
+*Architectural integrity is the highest priority.*
