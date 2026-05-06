@@ -10,6 +10,7 @@ import Footer from "@/components/layout/Footer";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { useProfileData } from "@/context/ProfileDataContext";
+import { shippingApi } from "@/lib/api/shipping";
 import { getImageUrl } from "@/lib/image-utils";
 import "@/styles/payment.css";
 
@@ -139,26 +140,15 @@ export default function CheckoutPage() {
       }
 
       try {
-        const token = typeof window !== "undefined" ? localStorage.getItem("novure_jwt") : null;
-        const res = await fetch("http://localhost:8000/api/storefront/shipping", {
-          method: "POST",
-          headers: { 
-            "Content-Type": "application/json",
-            ...(token ? { "Authorization": `Bearer ${token}` } : {}),
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            lat: selectedAddress.latitude,
-            lng: selectedAddress.longitude,
-            city: selectedAddress.city,
-          }),
+        const payload = await shippingApi.calculateShipping({
+          lat: selectedAddress.latitude,
+          lng: selectedAddress.longitude,
+          city: selectedAddress.city,
         });
 
-        const payload = await res.json();
-        if (!res.ok || !payload?.success || !Array.isArray(payload.couriers)) {
+        if (!payload?.success || !Array.isArray(payload.couriers)) {
           throw new Error(payload?.error || "Gagal mengambil ongkos kirim");
         }
-
         if (!active) return;
         setCouriers(payload.couriers as CourierOption[]);
         setSelectedCourierId((prev) => {

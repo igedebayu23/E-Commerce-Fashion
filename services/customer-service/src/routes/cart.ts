@@ -4,9 +4,9 @@ import { authenticateJWT, AuthRequest } from '../middleware/auth';
 
 const router = Router();
 
-// Secure all cart routes
-// Internal URL for Commerce Service to fetch product/variant data directly
-const COMMERCE_SERVICE_URL = process.env.COMMERCE_SERVICE_URL || 'http://commerce-service:3001';
+// Route all internal traffic through the API Gateway for centralized logging/auth
+const GATEWAY_URL = process.env.INTERNAL_API_URL || 'http://api-gateway:8000/api/storefront';
+const INTERNAL_KEY = process.env.INTERNAL_SERVICE_KEY;
 
 router.use(authenticateJWT);
 
@@ -14,7 +14,12 @@ async function fetchProducts(productIds: string[]) {
   if (productIds.length === 0) return [];
   try {
     const idsParam = productIds.join(',');
-    const res = await fetch(`${COMMERCE_SERVICE_URL}/api/products?ids=${idsParam}`);
+    // Call gateway which proxies to commerce-service
+    const res = await fetch(`${GATEWAY_URL}/products?ids=${idsParam}`, {
+      headers: {
+        'x-internal-key': INTERNAL_KEY || ''
+      }
+    });
     if (!res.ok) {
       console.error(`[Cart] fetchProducts failed: ${res.status}`);
       return [];
@@ -26,7 +31,7 @@ async function fetchProducts(productIds: string[]) {
       price: Number(d.price)
     }));
   } catch (err: any) {
-    console.error(`[Cart] Error fetching products:`, err.message);
+    console.error(`[Cart] Error fetching products via Gateway:`, err.message);
     return [];
   }
 }
@@ -47,7 +52,7 @@ async function hydrateCartItems(items: any[]) {
   });
 }
 
-// GET /api/storefront/cart - Fetch current user's cart with hydrated product data
+// GET /api/storefront/cart
 router.get('/', async (req: AuthRequest, res) => {
   try {
     const customerId = req.user!.id;
@@ -64,10 +69,8 @@ router.get('/', async (req: AuthRequest, res) => {
       });
     }
 
-    // Hydrate items with product data from commerce-service
     const hydratedItems = await hydrateCartItems(cart.items);
 
-    // Ensure we return the items inside a data object to match CartContext expectations
     res.json({
       success: true,
       data: {
@@ -81,7 +84,7 @@ router.get('/', async (req: AuthRequest, res) => {
   }
 });
 
-// POST /api/storefront/cart - Add item to cart
+// POST /api/storefront/cart
 router.post('/', async (req: AuthRequest, res) => {
   try {
     const customerId = req.user!.id;
@@ -121,19 +124,12 @@ router.post('/', async (req: AuthRequest, res) => {
       });
     }
 
-    // Return full hydrated cart
     const updatedCart = await prisma.cart.findUnique({
       where: { id: cart.id },
       include: { items: true },
     });
 
-    const hydratedItems = await Promise.all(
-      updatedCart!.items.map(async (item: any) => {
-        const product = await fetchProduct(item.productId);
-        const variant = product?.variants?.find((v: any) => v.id === item.productVariantId);
-        return { ...item, product, variant };
-      })
-    );
+    const hydratedItems = await hydrateCartItems(updatedCart!.items);
 
     res.json({ success: true, data: { ...updatedCart, items: hydratedItems } });
   } catch (error: any) {
@@ -142,7 +138,7 @@ router.post('/', async (req: AuthRequest, res) => {
   }
 });
 
-// PUT /api/storefront/cart - Update item quantity
+// PUT /api/storefront/cart
 router.put('/', async (req: AuthRequest, res) => {
   try {
     const customerId = req.user!.id;
@@ -161,13 +157,7 @@ router.put('/', async (req: AuthRequest, res) => {
       include: { items: true },
     });
 
-    const hydratedItems = await Promise.all(
-      updatedCart!.items.map(async (item: any) => {
-        const product = await fetchProduct(item.productId);
-        const variant = product?.variants?.find((v: any) => v.id === item.productVariantId);
-        return { ...item, product, variant };
-      })
-    );
+    const hydratedItems = await hydrateCartItems(updatedCart!.items);
 
     res.json({ success: true, data: { ...updatedCart, items: hydratedItems } });
   } catch (error: any) {
@@ -176,7 +166,7 @@ router.put('/', async (req: AuthRequest, res) => {
   }
 });
 
-// DELETE /api/storefront/cart/:itemId - Remove item from cart
+// DELETE /api/storefront/cart/:itemId
 router.delete('/:itemId', async (req: AuthRequest, res) => {
   try {
     const customerId = req.user!.id;
@@ -194,13 +184,7 @@ router.delete('/:itemId', async (req: AuthRequest, res) => {
       include: { items: true },
     });
 
-    const hydratedItems = await Promise.all(
-      updatedCart!.items.map(async (item: any) => {
-        const product = await fetchProduct(item.productId);
-        const variant = product?.variants?.find((v: any) => v.id === item.productVariantId);
-        return { ...item, product, variant };
-      })
-    );
+    const hydratedItems = await hydrateCartItems(updatedCart!.items);
 
     res.json({ success: true, data: { ...updatedCart, items: hydratedItems } });
   } catch (error: any) {
@@ -209,7 +193,7 @@ router.delete('/:itemId', async (req: AuthRequest, res) => {
   }
 });
 
-// PATCH /api/storefront/cart - Clear cart
+// PATCH /api/storefront/cart
 router.patch('/', async (req: AuthRequest, res) => {
   try {
     const customerId = req.user!.id;

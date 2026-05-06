@@ -38,19 +38,13 @@ app.use(cors({
 app.get(['/', '/api'], (req, res) => {
   res.json({
     name: "Novure E-Commerce API Gateway",
-    version: "1.3.0",
+    version: "2.0.0",
     status: "RUNNING",
     endpoints: {
       health: "/health",
       storefront: "/api/storefront",
-      storefrontAuth: "/api/storefront/auth",
-      storefrontCart: "/api/storefront/cart",
-      storefrontOrders: "/api/storefront/orders",
-      storefrontCheckout: "/api/storefront/checkout",
-      storefrontShipping: "/api/storefront/shipping",
-      adminAuth: "/api/admin/management/auth",
-      adminManagement: "/api/admin/management",
-      adminStorefront: "/api/admin/storefront"
+      admin: "/api/admin",
+      geography: "/api/geography"
     }
   });
 });

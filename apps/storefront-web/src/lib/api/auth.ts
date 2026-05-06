@@ -42,6 +42,20 @@ export const authApi = {
     }
   },
 
+  /** Attempt to register */
+  async register(data: any): Promise<{ success: boolean; data?: any; error?: string }> {
+    try {
+      const res = await fetch(`${API_BASE_URL}/auth/register`, fetchOptions({
+        method: "POST",
+        body: JSON.stringify(data),
+      }));
+      const result = await res.json();
+      return result;
+    } catch {
+      return { success: false, error: "Terjadi gangguan jaringan saat mendaftar." };
+    }
+  },
+
   /** Clear session cookie */
   async logout(): Promise<void> {
     await fetch(`${API_BASE_URL}/auth/logout`, fetchOptions({

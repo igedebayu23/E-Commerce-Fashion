@@ -5,6 +5,12 @@ import cookie from 'cookie';
 export function authenticateJWT(req: Request, res: Response, next: NextFunction) {
   let token = null;
 
+  // 0. Check Internal Service Key
+  const internalKey = req.headers['x-internal-key'];
+  if (internalKey && internalKey === process.env.INTERNAL_SERVICE_KEY) {
+    return next();
+  }
+
   // 1. Check Authorization header
   const authHeader = req.headers.authorization;
   if (authHeader && authHeader.startsWith('Bearer ')) {

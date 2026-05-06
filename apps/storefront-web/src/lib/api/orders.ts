@@ -29,9 +29,28 @@ export const ordersApi = {
   /**
    * Get specific order details
    */
-  async getOrderDetails(orderId: string) {
+  async getOrderById(orderId: string) {
     const res = await fetch(`${API_BASE_URL}/orders/${orderId}`, fetchOptions());
     if (!res.ok) throw new Error("Failed to fetch order details");
+    return await res.json();
+  },
+
+  /**
+   * Initiate Midtrans payment charge
+   */
+  async initiateMidtransCharge(params: { order_id: string; payment_type: string; bank?: string; customer_details: any }) {
+    const res = await fetch(`${API_BASE_URL}/checkout/midtrans`, fetchOptions({
+      method: "POST",
+      body: JSON.stringify(params),
+    }));
+    return await res.json();
+  },
+
+  /**
+   * Get Midtrans payment status
+   */
+  async getMidtransStatus(orderId: string) {
+    const res = await fetch(`${API_BASE_URL}/checkout/midtrans/status?orderId=${orderId}`, fetchOptions());
     return await res.json();
   }
 };

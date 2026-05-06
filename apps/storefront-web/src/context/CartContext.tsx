@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Product } from "../components/catalogue/types";
+import { cartApi } from "@/lib/api/cart";
 
 export interface ProductVariant {
   id: string;
@@ -39,21 +40,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-
-  const getApiBaseUrl = () => {
-    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/storefront";
-  };
-
   useEffect(() => {
     let mounted = true;
     const initCart = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(`${getApiBaseUrl()}/cart`, {
-          credentials: "include",
-        });
-        if (res.ok && mounted) {
-          const result = await res.json();
+        const result = await cartApi.getCart();
+        if (mounted) {
           setItems(result.data?.items || []);
         }
       } catch (err) {
@@ -70,18 +63,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await fetch(`${getApiBaseUrl()}/cart`, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({ productId: product.id, productVariantId: variantId, quantity }),
-      });
-      
-      const result = await res.json();
-      if (!res.ok || !result.success) throw new Error(result.error || "Failed to add to cart");
-      
+      const result = await cartApi.addToCart(product.id, variantId, quantity);
+      if (!result.success) throw new Error(result.error || "Failed to add to cart");
       setItems(result.data?.items || []);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -95,13 +78,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await fetch(`${getApiBaseUrl()}/cart/${itemId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      const result = await res.json();
-      if (!res.ok || !result.success) throw new Error(result.error || "Failed to remove item");
-      
+      const result = await cartApi.removeItem(itemId);
+      if (!result.success) throw new Error(result.error || "Failed to remove item");
       setItems(result.data?.items || []);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -114,17 +92,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await fetch(`${getApiBaseUrl()}/cart`, {
-        method: "PUT",
-        headers: { 
-          "Content-Type": "application/json"
-        },
-        credentials: "include",
-        body: JSON.stringify({ itemId, quantity }),
-      });
-      const result = await res.json();
-      if (!res.ok || !result.success) throw new Error(result.error || "Failed to update quantity");
-      
+      const result = await cartApi.updateQuantity(itemId, quantity);
+      if (!result.success) throw new Error(result.error || "Failed to update quantity");
       setItems(result.data?.items || []);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An error occurred");
@@ -140,13 +109,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await fetch(`${getApiBaseUrl()}/cart`, {
-        method: "PATCH",
-        credentials: "include",
-      });
-      const result = await res.json();
-      if (!res.ok || !result.success) throw new Error(result.error || "Failed to clear cart");
-      
+      const result = await cartApi.clearCart();
+      if (!result.success) throw new Error(result.error || "Failed to clear cart");
       setItems([]);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An error occurred");

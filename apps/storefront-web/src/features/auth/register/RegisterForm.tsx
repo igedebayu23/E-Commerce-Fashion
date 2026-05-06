@@ -7,10 +7,7 @@ import Link from "next/link";
 import LoginInput from "../login/LoginInput";
 import LoginErrorMessage from "../login/LoginErrorMessage";
 import LoginSubmitButton from "../login/LoginSubmitButton";
-
-const getApiBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/storefront";
-};
+import { authApi } from "@/lib/api/auth";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -33,16 +30,10 @@ export default function RegisterForm() {
     setIsLoading(true);
 
     try {
-      const res = await fetch(`${getApiBaseUrl()}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
-
-      const data = await res.json();
+      const data = await authApi.register({ name, email, password });
       setIsLoading(false);
 
-      if (!res.ok || !data.success) {
+      if (!data.success) {
         setError(data.error ?? data.message ?? "Gagal membuat akun.");
         return;
       }

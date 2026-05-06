@@ -15,6 +15,7 @@ services:
       - STOREFRONT_PROD_URL=${STOREFRONT_PROD_URL}
       - ADMIN_PROD_URL=${ADMIN_PROD_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-novure-internal-mesh-key-2026}
     depends_on:
       - commerce-service
       - admin-service
@@ -32,6 +33,8 @@ services:
       - PORT=3001
       - DATABASE_URL=${CORE_DATABASE_URL}
       - DIRECT_URL=${CORE_DIRECT_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-novure-internal-mesh-key-2026}
 
   admin-service:
     build:
@@ -52,6 +55,7 @@ services:
       - MIDTRANS_SERVER_KEY=${MIDTRANS_SERVER_KEY}
       - NEXT_PUBLIC_MIDTRANS_CLIENT_KEY=${NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
       - JWT_SECRET=${JWT_SECRET}
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-novure-internal-mesh-key-2026}
 
   customer-service:
     build:
@@ -61,6 +65,7 @@ services:
     environment:
       - DATABASE_URL=${ADMIN_DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-novure-internal-mesh-key-2026}
       - MIDTRANS_SERVER_KEY=${MIDTRANS_SERVER_KEY}
       - MIDTRANS_IS_PRODUCTION=false
       - NEXT_PUBLIC_MIDTRANS_CLIENT_KEY=${NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}

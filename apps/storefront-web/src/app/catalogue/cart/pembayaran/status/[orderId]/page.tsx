@@ -9,6 +9,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { useProfileData } from "@/context/ProfileDataContext";
 import { useAuth } from "@/context/AuthContext";
+import { ordersApi } from "@/lib/api/orders";
 import { getImageUrl } from "@/lib/image-utils";
 import "@/styles/payment-status-detail.css";
 
@@ -42,10 +43,6 @@ interface MidtransStatus {
   method?: string;
 }
 
-const getApiBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/storefront";
-};
-
 export default function PaymentStatusPage() {
   const params = useParams();
   const { user } = useAuth();
@@ -67,29 +64,19 @@ export default function PaymentStatusPage() {
     
     setLoading(true);
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("novure_jwt") : null;
       const methodKey = forcedMethod || new URLSearchParams(window.location.search).get("method") || "bca_va";
       const methodObj = PAYMENT_METHODS[methodKey];
 
-      const res = await fetch(`${getApiBaseUrl()}/checkout/midtrans`, {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+      const result = await ordersApi.initiateMidtransCharge({
+        order_id: orderId,
+        payment_type: methodObj?.midtransId,
+        bank: methodObj?.bank,
+        customer_details: {
+          first_name: user?.name,
+          email: user?.email,
         },
-        credentials: "include",
-        body: JSON.stringify({
-          order_id: orderId,
-          payment_type: methodObj?.midtransId,
-          bank: methodObj?.bank,
-          customer_details: {
-            first_name: user?.name,
-            email: user?.email,
-          },
-        }),
       });
 
-      const result = await res.json();
       if (result.success) {
         setStatus(result.data);
         setError(null);
@@ -108,14 +95,7 @@ export default function PaymentStatusPage() {
     if (!isRetry) setLoading(true);
 
     try {
-      const token = typeof window !== "undefined" ? localStorage.getItem("novure_jwt") : null;
-      const res = await fetch(`${getApiBaseUrl()}/checkout/midtrans/status?orderId=${orderId}`, {
-        headers: {
-          ...(token ? { "Authorization": `Bearer ${token}` } : {}),
-        },
-        credentials: "include"
-      });
-      const result = await res.json();
+      const result = await ordersApi.getMidtransStatus(orderId);
 
       if (result.success) {
         setStatus(result.data);

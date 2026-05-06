@@ -1,7 +1,8 @@
 import { prisma } from '@infrastructure/database/prisma';
 
-// Internal URL for Commerce Service
-const INTERNAL_API_URL = 'http://commerce-service:3001/api/admin';
+// Internal URL for API Gateway
+const GATEWAY_URL = 'http://api-gateway:8000/api/admin/storefront';
+const INTERNAL_KEY = process.env.INTERNAL_SERVICE_KEY;
 
 export interface ProductData {
   id: string;
@@ -41,7 +42,11 @@ export class CartService {
 
   async fetchProduct(productId: string): Promise<ProductData | null> {
     try {
-      const res = await fetch(`${INTERNAL_API_URL}/products/${productId}`);
+      const res = await fetch(`${GATEWAY_URL}/products/${productId}`, {
+        headers: {
+          'x-internal-key': INTERNAL_KEY || ''
+        }
+      });
       if (!res.ok) return null;
       const json = await res.json();
       return json.data;
