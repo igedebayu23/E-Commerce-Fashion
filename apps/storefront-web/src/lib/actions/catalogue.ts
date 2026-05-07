@@ -9,7 +9,6 @@
 import { catalogueApi, type CategoryFilter } from "@/lib/api/catalogue";
 import type { CatalogueProduct } from "@/features/catalogue/types";
 
-export type { CategoryFilter };
 
 /**
  * Fetch products via pure API client.

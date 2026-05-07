@@ -45,3 +45,4 @@ Layanan ini menggunakan pola desain berlapis untuk pemisahan tanggung jawab yang
 - **Database**: PostgreSQL via `@novure/database`.
 - **Runtime**: Node.js 20+ (Eksekusi via `tsx` di lingkungan dev).
 - **Port**: **3001** (Internal Mesh).
+- **BFF Alignment**: Di-mount oleh API Gateway pada jalur internal `/api/commerce`.

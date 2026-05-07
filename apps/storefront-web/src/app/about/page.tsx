@@ -1,7 +1,7 @@
 "use client";
 
 import { useScroll } from "framer-motion";
-import GlowOrb from "@/components/ui/GlowOrb";
+import GlowOrb from "@/components/atoms/GlowOrb";
 import AboutHero from "@/components/sections/about/AboutHero";
 import AboutStory from "@/components/sections/about/AboutStory";
 import AboutTeam from "@/components/sections/about/AboutTeam";

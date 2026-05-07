@@ -6,7 +6,6 @@ import "leaflet/dist/leaflet.css";
 
 // Fix Leaflet icon issue
 const fixLeafletIcon = () => {
-  // @ts-expect-error - Leaflet internal property manipulation
   const proto = L.Icon.Default.prototype as { _getIconUrl?: unknown };
   delete proto._getIconUrl;
   L.Icon.Default.mergeOptions({

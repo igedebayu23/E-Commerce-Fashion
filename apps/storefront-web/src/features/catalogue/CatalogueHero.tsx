@@ -3,8 +3,8 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import Link from "next/link";
-import GlowOrb from "@/components/ui/GlowOrb";
-import ScrollIndicator from "@/components/ui/ScrollIndicator";
+import GlowOrb from "@/components/atoms/GlowOrb";
+import ScrollIndicator from "@/components/atoms/ScrollIndicator";
 
 export default function CatalogueHero() {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx index.ts",
-    "start": "node dist/index.js",
+    "start": "npx tsx index.ts",
     "build": "tsc"
   },
   "dependencies": {
@@ -25,7 +25,7 @@
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.0.0",
-    "@types/node-fetch": "^2.6.13",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }

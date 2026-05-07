@@ -78,7 +78,7 @@ export default function PaymentStatusPage() {
       });
 
       if (result.success) {
-        setStatus(result.data as MidtransStatus);
+        setStatus(result.data as unknown as MidtransStatus);
         setError(null);
       } else {
         setError(result.error || "Gagal memulai pembayaran.");
@@ -98,7 +98,7 @@ export default function PaymentStatusPage() {
       const result = await ordersApi.getMidtransStatus(orderId);
 
       if (result.success) {
-        setStatus(result.data as MidtransStatus);
+        setStatus(result.data as unknown as MidtransStatus);
         setLoading(false);
       } else if (!isRetry) {
         const methodKey = new URLSearchParams(window.location.search).get("method");
@@ -270,7 +270,7 @@ export default function PaymentStatusPage() {
               <h3 style={{ fontSize: "1rem", fontWeight: "700", marginBottom: "1rem", borderBottom: "1px solid #eee", paddingBottom: "0.5rem" }}>Rincian Pesanan</h3>
               <div className="payment-products-list" style={{ marginBottom: "2rem" }}>
                 {localOrder.items.map((item) => {
-                  const productImg = getImageUrl(item.product?.imageUrl || (item.product?.image && item.product.image[0]) || (item.product?.images && item.product.images[0])) || '/images/about/model1.png';
+                  const productImg = getImageUrl(item.product?.imageUrl || item.product?.image?.[0] || item.product?.images?.[0]) || '/images/about/model1.png';
                   return (
                     <div key={item.productId} style={{ display: "flex", gap: "1rem", padding: "0.75rem 0", borderBottom: "1px solid #f9f9f9" }}>
                       <div style={{ width: 48, height: 56, borderRadius: 4, overflow: "hidden", position: "relative", backgroundColor: "#f5f5f5" }}>

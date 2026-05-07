@@ -9,7 +9,7 @@ Dokumen ini adalah mandat operasi untuk `api-gateway`. Gateway ini bertindak seb
 - **Proxying (http-proxy-middleware v3)**: 
   - Gunakan pabrik `proxyOptions` di `src/proxies/common.proxy.ts`. 
   - Wajib memanggil `fixRequestBody(proxyReq, req)` karena penggunaan middleware `express.json()`.
-- **Path Rewriting**: Tangani translasi URL publik yang ramah (mis. `/api/admin/auth`) ke rute internal yang teknis (mis. `/api/admin/management/auth`) di level proksi.
+- **Path Rewriting**: Gunakan jalur yang konsisten antara publik dan internal (mis. `/api/admin/auth`) untuk menyederhanakan pemeliharaan dan sesuai dengan standar API Gateway yang baru.
 - **Kontrak Layanan**: Downstream service mengikuti arsitektur berlapis (controllers/services/db). Gateway tidak bergantung pada struktur internalnya.
 
 ### Protokol Keamanan & Validasi
@@ -41,8 +41,9 @@ Dokumen ini adalah mandat operasi untuk `api-gateway`. Gateway ini bertindak seb
   - `management.routes.ts`: Pengaturan sistem & logistik.
 
 ### Proksi Layanan Hilir (`src/proxies/`)
-- `commerce.proxy.ts`: Merutekan ke port **3001**.
-- `admin.proxy.ts`: Merutekan ke port **4001** (dan menangani rewrite ke `/management`).
+- `commerce.proxy.ts`: Merutekan ke port **3001** (dengan rewrite standar ke `/api/commerce`).
+- `admin.proxy.ts`: Merutekan ke port **4001** (dengan rewrite standar ke `/api/admin`).
+- `customer.proxy.ts`: Merutekan ke port **4002** (dengan rewrite standar ke `/api/customer`).
 - `geography.proxy.ts`: Menangani passthrough ke API *Emsifa* eksternal.
 
 ### Middleware Terpusat

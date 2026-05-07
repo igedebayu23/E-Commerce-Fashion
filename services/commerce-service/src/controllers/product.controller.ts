@@ -4,10 +4,10 @@ import { ProductService } from '../services/product.service';
 export class ProductController {
   static async getProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const { categoryId, categoryName, q, ids } = req.query;
+      const { categoryId, categoryName, category, q, ids } = req.query;
       const data = await ProductService.getProducts({
         categoryId: categoryId as string,
-        categoryName: categoryName as string,
+        categoryName: (categoryName || category) as string,
         query: q as string,
         idsParam: ids as string
       });

@@ -1,52 +1,44 @@
-# Stage 1: Dependencies
-FROM node:24.15.0-alpine AS deps
+# Use a single stage for building to ensure consistency
+FROM node:24.15.0-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package*.json ./
-# Use npm ci for clean, deterministic installs
-RUN npm ci
 
-# Stage 2: Builder
-FROM node:24.15.0-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Cache dependencies
+COPY package.json package-lock.json ./
+COPY apps/admin-web/package.json ./apps/admin-web/
+COPY apps/storefront-web/package.json ./apps/storefront-web/
+COPY services/api-gateway/package.json ./services/api-gateway/
+COPY services/commerce-service/package.json ./services/commerce-service/
+COPY services/admin-service/package.json ./services/admin-service/
+COPY services/customer-service/package.json ./services/customer-service/
+COPY packages/contracts/package.json ./packages/contracts/
+COPY packages/database/package.json ./packages/database/
+
+RUN npm ci --include=dev
+
+# Build
 COPY . .
+RUN npx prisma generate --schema=services/commerce-service/prisma/schema.prisma
+RUN npm run build -w @novure/commerce-service
 
-# ARGs allow passing values during build time (e.g. for Prisma)
-ARG DATABASE_URL
-ARG DIRECT_URL
-
-# Set them as ENV for build process
-ENV DATABASE_URL=$DATABASE_URL
-ENV DIRECT_URL=$DIRECT_URL
-
-# Generate Prisma Client (uses custom output path from schema.prisma)
-RUN npx prisma generate
-
-# Build the application (compiles TS to JS in dist/)
-RUN npm run build
-
-# Stage 3: Runner
+# Stage 2: Runner
 FROM node:24.15.0-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Create non-root user for security
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 expressjs
 
-# Copy only necessary files from builder
-COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/services/commerce-service/src ./src
+COPY --from=builder /app/services/commerce-service/package.json ./package.json
+COPY --from=builder /app/services/commerce-service/prisma ./prisma
+COPY --from=builder /app/services/commerce-service/src/generated ./src/generated
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/prisma ./prisma
 
-# Set ownership
 RUN chown -R expressjs:nodejs /app
 
 USER expressjs
 EXPOSE 3001
 ENV PORT=3001
 
-# Run the compiled application
-CMD ["node", "dist/index.js"]
+CMD ["npx", "tsx", "services/commerce-service/src/index.ts"]

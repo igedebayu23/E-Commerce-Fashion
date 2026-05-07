@@ -9,8 +9,8 @@ import type { Metadata } from "next";
 import { ColorProvider } from "@/context/ColorContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import CatalogueHero from "@/components/catalogue/CatalogueHero";
-import CatalogueClient from "@/components/catalogue/CatalogueClient";
+import CatalogueHero from "@/features/catalogue/CatalogueHero";
+import CatalogueClient from "@/features/catalogue/CatalogueClient";
 import { getProducts } from "@/lib/actions/catalogue";
 import styles from "@/styles/catalogue-page.module.css";
 
@@ -37,4 +37,3 @@ export default async function CataloguePage() {
     </ColorProvider>
   );
 }
-

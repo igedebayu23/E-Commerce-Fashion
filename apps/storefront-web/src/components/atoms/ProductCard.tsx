@@ -10,8 +10,8 @@ export interface DiscoverProduct {
   id: string | number;
   name: string;
   image?: string;
-  sizes: string;
-  rating: number;
+  sizes?: string;
+  rating?: number;
   price: number;
   blurred?: boolean;
 }
@@ -76,8 +76,8 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               <Star
                 key={i}
                 size={12}
-                fill={i < product.rating ? "#111" : "#ddd"}
-                color={i < product.rating ? "#111" : "#ddd"}
+                fill={i < (product.rating || 0) ? "#111" : "#ddd"}
+                color={i < (product.rating || 0) ? "#111" : "#ddd"}
               />
             ))}
           </div>

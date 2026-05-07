@@ -193,9 +193,9 @@ export default function CheckoutPage() {
         .trim();
     };
 
-    const prov = translateMapTerm(rawAddr.state || rawAddr.region || "");
-    const city = translateMapTerm(rawAddr.city || rawAddr.county || rawAddr.municipality || "");
-    const dist = translateMapTerm(rawAddr.suburb || rawAddr.district || rawAddr.village || rawAddr.town || "");
+    const prov = translateMapTerm((rawAddr.state as string) || (rawAddr.region as string) || "");
+    const city = translateMapTerm((rawAddr.city as string) || (rawAddr.county as string) || (rawAddr.municipality as string) || "");
+    const dist = translateMapTerm((rawAddr.suburb as string) || (rawAddr.district as string) || (rawAddr.village as string) || (rawAddr.town as string) || "");
 
     setAddressFormData(prev => ({ 
       ...prev, 
@@ -516,7 +516,7 @@ export default function CheckoutPage() {
               ) : (
                 items.map((item) => {
                   const unit = normalizePrice(item.product?.price || 0);
-                  const productImg = getImageUrl(item.product?.imageUrl || (item.product?.image && item.product.image[0]) || (item.product?.images && item.product.images[0]));
+                  const productImg = getImageUrl(item.product?.imageUrl || item.product?.image?.[0] || item.product?.images?.[0]);
                   
                   return (
                     <div key={item.id} className="checkout-product-row">

@@ -34,4 +34,4 @@ Dokumen ini merupakan mandat arsitektural untuk `admin-service`. Layanan ini ber
 - **Framework**: Express 5.
 - **Database**: PostgreSQL (Prisma).
 - **Port**: **4001** (Internal).
-- **BFF Alignment**: Di-mount oleh API Gateway pada jalur `/api/admin/management/*`.
+- **BFF Alignment**: Di-mount oleh API Gateway pada jalur internal standar `/api/admin`.

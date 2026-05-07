@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import ProfilePage from "@/components/auth/profile/ProfilePage";
+import ProfilePage from "@/features/auth/profile/ProfilePage";
 import "@/styles/profile.css";
 import "@/styles/profile-views.css";
 

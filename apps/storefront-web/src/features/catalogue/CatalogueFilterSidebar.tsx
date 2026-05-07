@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { CategoryFilter } from "@/lib/actions/catalogue";
+import type { CategoryFilter } from "@/lib/api/catalogue";
 
-import AnimatedText from "@/components/ui/AnimatedText";
+import AnimatedText from "@/components/atoms/AnimatedText";
 
 interface Props {
   activeCategory: CategoryFilter;

@@ -10,6 +10,7 @@ import storefrontShippingRoutes from './storefront/shipping.routes';
 
 import adminProductsRoutes from './admin/products.routes';
 import adminOrdersRoutes from './admin/orders.routes';
+import adminAnalyticsRoutes from './admin/analytics.routes';
 import adminUsersRoutes from './admin/users.routes';
 import adminManagementRoutes from './admin/management.routes';
 
@@ -39,7 +40,7 @@ router.use('/storefront', storefrontCatalogRoutes); // Generic storefront (produ
 router.use('/admin/auth', adminUsersRoutes);
 router.use('/admin/shipping', adminManagementRoutes);
 router.use('/admin/storefront/orders', adminOrdersRoutes);
-router.use('/admin/storefront/analytics', adminOrdersRoutes);
+router.use('/admin/storefront/analytics', adminAnalyticsRoutes);
 router.use('/admin/storefront', adminProductsRoutes);
 router.use('/admin/storefront/categories', adminProductsRoutes);
 router.use('/admin/management', adminManagementRoutes);

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { OrderService } from '../services/order.service';
-import { OrderStatus } from '@novure/database';
+import { OrderStatus } from '@prisma/client';
 
 export class OrderController {
   static async getOrders(req: Request, res: Response, next: NextFunction) {
@@ -15,7 +15,7 @@ export class OrderController {
 
   static async getOrderById(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await OrderService.getOrderById(req.params.id);
+      const data = await OrderService.getOrderById(req.params.id as string);
       res.json({ success: true, data });
     } catch (err) {
       next(err);

@@ -21,12 +21,12 @@ app.get('/health', (req, res) => {
 });
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/account', accountRoutes);
-app.use('/cart', cartRoutes);
-app.use('/checkout', checkoutRoutes);
-app.use('/orders', orderRoutes);
-app.use('/shipping', shippingRoutes);
+app.use('/api/customer/auth', authRoutes);
+app.use('/api/customer/account', accountRoutes);
+app.use('/api/customer/cart', cartRoutes);
+app.use('/api/customer/checkout', checkoutRoutes);
+app.use('/api/customer/orders', orderRoutes);
+app.use('/api/customer/shipping', shippingRoutes);
 
 // Error Handler
 app.use(errorHandler);

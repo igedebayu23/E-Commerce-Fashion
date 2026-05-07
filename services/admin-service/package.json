@@ -4,11 +4,12 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-	  "dev": "tsx src/index.ts",
-	  "start": "node dist/index.js",
-	  "build": "tsc",
-	  "prisma:generate": "prisma generate"
-	},	"devDependencies": {
+		"dev": "tsx src/index.ts",
+		"start": "node dist/index.js",
+		"build": "tsc",
+		"prisma:generate": "prisma generate"
+	},
+	"devDependencies": {
 		"@eslint/compat": "^2.0.4",
 		"@eslint/js": "^10.0.1",
 		"@types/bcryptjs": "^2.4.6",

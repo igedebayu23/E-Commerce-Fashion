@@ -4,7 +4,7 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import NavbarAuthStatus from "@/components/auth/NavbarAuthStatus";
+import NavbarAuthStatus from "@/features/auth/NavbarAuthStatus";
 import { useCart } from "@/context/CartContext";
 import styles from "@/styles/Navbar.module.css";
 

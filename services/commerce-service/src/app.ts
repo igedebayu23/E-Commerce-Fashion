@@ -21,18 +21,18 @@ app.get("/health", (req, res) => {
 });
 
 // For storefront BFF (via Gateway)
-app.use("/api/products", productRoutes);
-app.use("/api/categories", categoryRoutes);
-app.use("/api/reviews", reviewRoutes);
-app.use("/api/shipping", shippingRoutes);
+app.use("/api/commerce/products", productRoutes);
+app.use("/api/commerce/categories", categoryRoutes);
+app.use("/api/commerce/reviews", reviewRoutes);
+app.use("/api/commerce/shipping", shippingRoutes);
 
 // For admin BFF (via Gateway)
-app.use("/api/admin/products", productAdminRoutes);
-app.use("/api/admin/categories", categoryAdminRoutes);
-app.use("/api/admin/analytics", analyticsRoutes);
-app.use("/api/admin/uploads", uploadRoutes);
+app.use("/api/commerce/admin/products", productAdminRoutes);
+app.use("/api/commerce/admin/categories", categoryAdminRoutes);
+app.use("/api/commerce/admin/analytics", analyticsRoutes);
+app.use("/api/commerce/admin/uploads", uploadRoutes);
 
-app.use("/api/health", healthRoutes);
+app.use("/api/commerce/health", healthRoutes);
 
 // Error Handler
 app.use(errorHandler);

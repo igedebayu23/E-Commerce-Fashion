@@ -34,7 +34,7 @@ export default function RegisterForm() {
       setIsLoading(false);
 
       if (!data.success) {
-        setError(data.error ?? data.message ?? "Gagal membuat akun.");
+        setError(data.error ?? "Gagal membuat akun.");
         return;
       }
 

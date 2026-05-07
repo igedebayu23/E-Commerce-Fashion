@@ -39,8 +39,8 @@ function rowToProduct(row: Record<string, unknown>): CatalogueProduct {
     colors: colors,
     sizeOptions: options,
     sizeStocks: stocks,
-    inStock: (row.inStock as boolean) && (variants.length === 0 || variants.some((v: { stock: number }) => v.stock > 0)),
-    variants: variants.map((v: { id: string; size: string; color?: string; stock: number }) => ({
+    inStock: (row.inStock as boolean) && (variants.length === 0 || (variants as Array<{ stock: number }>).some((v) => v.stock > 0)),
+    variants: (variants as Array<{ id: string; size: string; color?: string; stock: number }>).map((v) => ({
       id: v.id,
       productId: row.id as string,
       size: v.size,
@@ -57,7 +57,7 @@ export const catalogueApi = {
   async getProducts(category: CategoryFilter = "all"): Promise<CatalogueProduct[]> {
     let urlString = `${API_BASE_URL}/products`;
     if (category !== "all") {
-      urlString += `?category=${category}`;
+      urlString += `?categoryName=${category}`;
     }
 
     const res = await fetch(urlString, fetchOptions({ cache: "no-store" }));

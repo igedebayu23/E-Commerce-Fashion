@@ -3,7 +3,7 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
-import GlowOrb from "@/components/ui/GlowOrb";
+import GlowOrb from "@/components/atoms/GlowOrb";
 
 export default function CatalogueParallaxBanner() {
   const ref = useRef<HTMLDivElement>(null);

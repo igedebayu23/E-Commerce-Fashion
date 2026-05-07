@@ -70,7 +70,7 @@ export const CAROUSEL_IMAGES = [
 ];
 
 // ── Catalogue fallback (used when DB is unreachable) ──────────────────────────
-import type { CatalogueProduct } from "@/components/catalogue/types";
+import type { CatalogueProduct } from "@/features/catalogue/types";
 
 export const CATALOGUE_PRODUCTS_FALLBACK: CatalogueProduct[] = [
   {

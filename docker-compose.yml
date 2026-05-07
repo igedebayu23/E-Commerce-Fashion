@@ -1,14 +1,15 @@
 services:
   api-gateway:
     build:
-      context: ./services/api-gateway
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
     ports:
       - "${GATEWAY_PORT:-8000}:8000"
     environment:
       - PORT=8000
-      - STOREFRONT_BACKEND_URL=http://commerce-service:3001
-      - ADMIN_BACKEND_URL=http://admin-service:4001
-      - CUSTOMER_BACKEND_URL=http://customer-service:4002
+      - COMMERCE_SERVICE_URL=http://commerce-service:3001
+      - ADMIN_SERVICE_URL=http://admin-service:4001
+      - CUSTOMER_SERVICE_URL=http://customer-service:4002
       - STOREFRONT_URL=${STOREFRONT_PROD_URL:-http://localhost:3000}
       - ADMIN_URL=${ADMIN_PROD_URL:-http://localhost:4000}
       - GATEWAY_PROD_URL=${GATEWAY_PROD_URL}
@@ -24,7 +25,8 @@ services:
 
   commerce-service:
     build:
-      context: ./services/commerce-service
+      context: .
+      dockerfile: services/commerce-service/Dockerfile
       args:
         - DATABASE_URL=${CORE_DATABASE_URL}
         - DIRECT_URL=${CORE_DIRECT_URL}
@@ -39,7 +41,8 @@ services:
 
   admin-service:
     build:
-      context: ./services/admin-service
+      context: .
+      dockerfile: services/admin-service/Dockerfile
       args:
         - DATABASE_URL=${ADMIN_DATABASE_URL}
         - MIDTRANS_SERVER_KEY=${MIDTRANS_SERVER_KEY}
@@ -60,7 +63,8 @@ services:
 
   customer-service:
     build:
-      context: ./services/customer-service
+      context: .
+      dockerfile: services/customer-service/Dockerfile
     ports:
       - "4002:4002"
     environment:
@@ -75,7 +79,8 @@ services:
 
   storefront-web:
     build:
-      context: ./apps/storefront-web
+      context: .
+      dockerfile: apps/storefront-web/Dockerfile
       args:
         - NEXT_PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
         - NEXT_PUBLIC_API_URL=${GATEWAY_PROD_URL:-http://localhost:8000}/api/storefront
@@ -91,10 +96,13 @@ services:
 
   admin-web:
     build:
-      context: ./apps/admin-web
+      context: .
+      dockerfile: apps/admin-web/Dockerfile
       args:
         - PUBLIC_GATEWAY_URL=${GATEWAY_PROD_URL:-http://localhost:8000}
         - PUBLIC_STOREFRONT_URL=${STOREFRONT_PROD_URL:-http://localhost:3000}
+        - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
+        - PUBLIC_SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
     ports:
       - "${ADMIN_DASHBOARD_PORT:-4000}:4000"
     environment:

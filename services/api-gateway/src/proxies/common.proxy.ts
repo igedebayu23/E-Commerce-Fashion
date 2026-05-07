@@ -5,6 +5,7 @@ export const proxyOptions = (target: string) => ({
   changeOrigin: true,
   on: {
     proxyReq: (proxyReq: any, req: any) => {
+      console.log(`[Proxy] Forwarding ${req.method} ${req.originalUrl} -> ${target}${proxyReq.path}`);
       fixRequestBody(proxyReq, req);
       
       // Forward cookies

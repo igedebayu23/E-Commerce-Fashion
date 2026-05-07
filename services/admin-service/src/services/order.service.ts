@@ -1,5 +1,5 @@
 import { prisma } from '../db/client';
-import type { OrderStatus } from '@novure/database';
+import type { OrderStatus } from '@prisma/client';
 
 export class OrderService {
   static async getOrders(status?: OrderStatus) {

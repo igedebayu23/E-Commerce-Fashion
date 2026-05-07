@@ -4,10 +4,14 @@ import { proxyOptions } from './common.proxy';
 
 export const commerceProxy = createProxyMiddleware({
   ...proxyOptions(env.COMMERCE_SERVICE_URL),
-  pathRewrite: { '^/api/storefront': '/api' }
+  pathRewrite: (path, req) => {
+    return req.originalUrl.replace(/^\/api\/storefront/, '/api/commerce');
+  }
 });
 
 export const commerceAdminProxy = createProxyMiddleware({
   ...proxyOptions(env.COMMERCE_SERVICE_URL),
-  pathRewrite: { '^/api/admin/storefront': '/api/admin' }
+  pathRewrite: (path, req) => {
+    return req.originalUrl.replace(/^\/api\/admin\/storefront/, '/api/commerce/admin');
+  }
 });

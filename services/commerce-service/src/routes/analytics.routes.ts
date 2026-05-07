@@ -3,7 +3,7 @@ import { AnalyticsController } from "../controllers/analytics.controller";
 
 const router = Router();
 
-router.get("/admin", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const result = await AnalyticsController.getAnalytics();
     res.json(result);

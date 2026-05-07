@@ -70,11 +70,12 @@ export default function ProfilePage() {
   }
 
   const handleSavePayment = async (payload: { label: string; accountNumber: string; accountName: string }) => {
-    await addPaymentMethod(payload);
+    const result = await addPaymentMethod(payload);
     updateUser({ paymentPreference: payload.label });
+    return result;
   };
 
-  const handleSavePassword = (payload: Record<string, string>) => {
+  const handleSavePassword = (payload: { currentPassword: string; newPassword: string }) => {
     const result = updatePassword({
       currentPassword: payload.currentPassword,
       newPassword: payload.newPassword,

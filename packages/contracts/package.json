@@ -1,7 +1,11 @@
 {
   "name": "@novure/contracts",
   "version": "1.0.0",
+  "type": "module",
   "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "dependencies": {
     "joi": "^17.13.3"
   },

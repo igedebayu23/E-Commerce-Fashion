@@ -1,63 +1,43 @@
-# Stage 1: Dependencies
-FROM node:24.15.0-alpine AS deps
+# Use a single stage for building to ensure consistency
+FROM node:24.15.0-alpine AS builder
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci
 
-# Stage 2: Builder
-FROM node:24.15.0-alpine AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Cache dependencies
+COPY package.json package-lock.json ./
+COPY apps/admin-web/package.json ./apps/admin-web/
+COPY apps/storefront-web/package.json ./apps/storefront-web/
+COPY services/api-gateway/package.json ./services/api-gateway/
+COPY services/commerce-service/package.json ./services/commerce-service/
+COPY services/admin-service/package.json ./services/admin-service/
+COPY services/customer-service/package.json ./services/customer-service/
+COPY packages/contracts/package.json ./packages/contracts/
+COPY packages/database/package.json ./packages/database/
+
+RUN npm ci --include=dev
+
+# Build
 COPY . .
+RUN npx prisma generate --schema=packages/database/prisma/schema.prisma
+RUN npm run prepare -w @novure/admin-service || echo "Prepare failed, continuing..."
+RUN npm run build -w @novure/admin-service
 
-# ARGs for build time
-ARG DATABASE_URL
-ARG MIDTRANS_SERVER_KEY
-ARG MIDTRANS_IS_PRODUCTION
-ARG NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
-
-# Set them as ENV for build process
-ENV DATABASE_URL=$DATABASE_URL
-ENV MIDTRANS_SERVER_KEY=$MIDTRANS_SERVER_KEY
-ENV MIDTRANS_IS_PRODUCTION=$MIDTRANS_IS_PRODUCTION
-ENV NEXT_PUBLIC_MIDTRANS_CLIENT_KEY=$NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
-
-RUN npx prisma generate
-RUN npm run build
-
-# Stage 3: Production Dependencies
-FROM node:24.15.0-alpine AS prod-deps
-WORKDIR /app
-COPY package*.json ./
-COPY prisma ./prisma/
-COPY prisma.config.ts ./
-
-ARG DATABASE_URL
-ARG DIRECT_URL
-ENV DATABASE_URL=$DATABASE_URL
-ENV DIRECT_URL=$DIRECT_URL
-
-RUN npm ci --omit=dev && npm cache clean --force
-RUN npx prisma generate
-
-# Stage 4: Runner
+# Stage 2: Runner
 FROM node:24.15.0-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
-# Create non-root user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 sveltekit
 
-COPY --from=builder /app/build ./build
-COPY --from=builder /app/package.json ./package.json
-COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=builder /app/services/admin-service/src ./src
+COPY --from=builder /app/services/admin-service/package.json ./package.json
+COPY --from=builder /app/node_modules ./node_modules
 
-# Set permissions
 RUN chown -R sveltekit:nodejs /app
 
 USER sveltekit
 EXPOSE 4001
 ENV PORT=4001
-CMD ["node", "build"]
+
+CMD ["npx", "tsx", "services/admin-service/src/index.ts"]

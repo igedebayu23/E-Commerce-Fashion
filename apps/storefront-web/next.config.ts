@@ -14,6 +14,16 @@ const nextConfig: NextConfig = {
         hostname: 'ghdadhlyhzdkrjlurifj.supabase.co',
         pathname: '/**',
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        pathname: '/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'api-gateway',
+        pathname: '/**',
+      },
     ],
   },
 };

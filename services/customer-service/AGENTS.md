@@ -41,4 +41,5 @@ Dokumen ini adalah spesifikasi arsitektur untuk `customer-service`. Layanan ini 
 - **Framework**: Express 5.
 - **Database**: PostgreSQL (Prisma).
 - **Port**: **4002** (Internal Docker).
+- **BFF Alignment**: Di-mount oleh API Gateway pada jalur internal `/api/customer`.
 - **Mesh Communication**: Memanggil `commerce-service` melalui API Gateway (8000) menggunakan `INTERNAL_SERVICE_KEY` untuk mengambil data produk terkini.

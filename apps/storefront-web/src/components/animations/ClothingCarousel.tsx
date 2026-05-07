@@ -6,11 +6,11 @@ import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { getImageUrl } from "@/lib/image-utils";
-type ClothingItem = { id: string; name: string; price: number; image: string; description: string };
+import type { CatalogueProduct } from "@/features/catalogue/types";
 
 interface ClothingCarouselProps {
-  currentTee: ClothingItem;
-  currentJeans: ClothingItem;
+  currentTee: CatalogueProduct;
+  currentJeans: CatalogueProduct;
   comboKey: number;
   onNext: () => void;
   onPrev: () => void;

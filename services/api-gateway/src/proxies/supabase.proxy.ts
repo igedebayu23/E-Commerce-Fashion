@@ -8,7 +8,7 @@ export const supabaseProxy = createProxyMiddleware({
     '^/api/assets/supabase/': '/storage/v1/object/public/'
   },
   on: {
-    error: (err, req, res) => {
+    error: (err: any, req: any, res: any) => {
       console.error(`[Supabase Proxy Error] ${req.method} ${req.url}:`, err.message);
       if (res && 'writeHead' in res) {
         res.writeHead(502, { 'Content-Type': 'application/json' });

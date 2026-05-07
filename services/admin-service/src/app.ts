@@ -16,9 +16,9 @@ app.get('/health', (req, res) => {
 });
 
 // Modular Routes
-app.use('/api/admin/management/auth', authRoutes);
-app.use('/api/admin/management/orders', orderRoutes);
-app.use('/api/admin/management/shipping', shippingRoutes);
+app.use('/api/admin/auth', authRoutes);
+app.use('/api/admin/orders', orderRoutes);
+app.use('/api/admin/shipping', shippingRoutes);
 
 // Error Handler
 app.use(errorHandler);

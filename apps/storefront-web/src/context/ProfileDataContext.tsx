@@ -12,6 +12,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import type { CartItem } from "@/context/CartContext";
 import { accountApi } from "@/lib/api/account";
+import { Product } from "@/features/catalogue/types";
 
 export type ProfileOrderStatus = "awaiting_payment" | "processing" | "shipped" | "delivered" | "cancelled";
 
@@ -47,7 +48,7 @@ export interface ProfileOrderItem {
   quantity: number;
   unitPrice: number;
   imageUrl: string;
-  product?: Record<string, unknown>;
+  product?: Product;
 }
 
 export interface ProfileOrder {

@@ -5,7 +5,7 @@
  * Order history section.
  */
 
-import ProfileOrderCard from "./ProfileOrderCard";
+import ProfileOrderCard, { type MockOrder } from "./ProfileOrderCard";
 import type { ProfileOrder } from "@/context/ProfileDataContext";
 import { getImageUrl } from "@/lib/image-utils";
 
@@ -41,7 +41,7 @@ export default function ProfileOrderHistory({ orders }: ProfileOrderHistoryProps
                 : "Rincian produk tidak tersedia",
               imageUrl: getImageUrl(primaryItem?.imageUrl) || "/images/about/model1.png",
               total: formatPrice(order.total),
-              status: order.status,
+              status: order.status as MockOrder["status"],
               productId: primaryItem?.productId
             };
             return <ProfileOrderCard key={order.id} order={displayOrder} />;

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import type { CatalogueProduct } from "./types";
-import type { CategoryFilter } from "@/lib/actions/catalogue";
+import type { CategoryFilter } from "@/lib/api/catalogue";
 import CatalogueFilterSidebar from "./CatalogueFilterSidebar";
 import CatalogueGrid from "./CatalogueGrid";
 import ProductDetailModal from "./ProductDetailModal";

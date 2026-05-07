@@ -5,7 +5,7 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { getProducts } from "@/lib/actions/catalogue";
-import type { CatalogueProduct } from "@/components/catalogue/types";
+import type { CatalogueProduct } from "@/features/catalogue/types";
 
 import FilterBar from "@/components/atoms/FilterBar";
 import ProductCard from "@/components/atoms/ProductCard";
