@@ -9,6 +9,7 @@ COPY apps/storefront-web/package.json ./apps/storefront-web/
 COPY services/commerce-service/package.json ./services/commerce-service/
 COPY services/admin-service/package.json ./services/admin-service/
 COPY services/customer-service/package.json ./services/customer-service/
+COPY packages/shared/package.json ./packages/shared/
 COPY packages/contracts/package.json ./packages/contracts/
 COPY packages/database/package.json ./packages/database/
 
@@ -23,6 +24,9 @@ COPY . .
 # Generate Prisma Client
 RUN npx prisma generate --schema=services/commerce-service/prisma/schema.prisma
 
+# Build shared package first
+RUN npm run build -w @novarium/shared
+
 # Build the specific service
 RUN npm run build -w @novarium/commerce-service
 
@@ -35,6 +39,7 @@ COPY apps/storefront-web/package.json ./apps/storefront-web/
 COPY services/commerce-service/package.json ./services/commerce-service/
 COPY services/admin-service/package.json ./services/admin-service/
 COPY services/customer-service/package.json ./services/customer-service/
+COPY packages/shared/package.json ./packages/shared/
 COPY packages/contracts/package.json ./packages/contracts/
 COPY packages/database/package.json ./packages/database/
 
