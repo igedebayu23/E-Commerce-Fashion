@@ -1,43 +1,43 @@
 {
-	"name": "@novarium/admin-service",
-	"private": true,
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "tsx src/index.ts",
-		"start": "node dist/index.js",
-		"build": "tsup",
-		"prisma:generate": "prisma generate"
-	},
-	"devDependencies": {
-		"@eslint/compat": "^2.0.4",
-		"@eslint/js": "^10.0.1",
-		"@types/bcryptjs": "^2.4.6",
-		"@types/cors": "^2.8.19",
-		"@types/express": "^5.0.6",
-		"@types/jsonwebtoken": "^9.0.10",
-		"@types/node": "^24.0.0",
-		"@types/pg": "^8.20.0",
-		"eslint": "^10.2.0",
-		"globals": "^17.4.0",
-		"tsup": "^8.5.1",
-		"tsx": "^4.21.0",
-		"typescript": "^6.0.2",
-		"typescript-eslint": "^8.58.1"
-	},
-	"dependencies": {
-		"@novarium/contracts": "*",
-		"@novarium/database": "*",
-		"@novarium/shared": "*",
-		"@prisma/adapter-pg": "^7.8.0",
-		"@prisma/client": "^7.8.0",
-		"@prisma/config": "^7.8.0",
-		"bcryptjs": "^3.0.3",
-		"cors": "^2.8.6",
-		"dotenv": "^17.4.2",
-		"express": "^5.2.1",
-		"jsonwebtoken": "^9.0.3",
-		"midtrans-client": "^1.4.3",
-		"pg": "^8.20.0",
-		"prisma": "^7.8.0"
-	}
+  "name": "@novarium/admin-service",
+  "private": true,
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsup",
+    "prisma:generate": "prisma generate"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^2.0.4",
+    "@eslint/js": "^10.0.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.20.0",
+    "eslint": "^10.2.0",
+    "globals": "^17.4.0",
+    "tsup": "^8.5.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.1"
+  },
+  "dependencies": {
+    "@novarium/contracts": "*",
+    "@novarium/database": "*",
+    "@novarium/shared": "*",
+    "@prisma/adapter-pg": "^7.8.0",
+    "@prisma/client": "^7.8.0",
+    "@prisma/config": "^7.8.0",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "midtrans-client": "^1.4.3",
+    "pg": "^8.20.0",
+    "prisma": "^7.8.0"
+  }
 }

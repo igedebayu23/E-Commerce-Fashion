@@ -1,18 +1,12 @@
 import { defineConfig } from 'tsup';
 
 export default defineConfig({
-  entry: {
-    index: 'src/index.ts'
-  },
+  entry: ['src/index.ts'],
   format: ['cjs'],
   clean: true,
   platform: 'node',
   external: [
-    '@novarium/admin-prisma',
-    '@prisma/client',
-    '@prisma/adapter-pg',
-    '@prisma/config',
-    '@prisma/client-runtime-utils',
+    '@prisma/client', '@prisma/adapter-pg', '@prisma/config', '@prisma/client-runtime-utils', '@novarium/admin-prisma'
   ],
-  noExternal: ['@novarium/database'],
+  noExternal: ['@novarium/contracts', '@novarium/shared'],
 });

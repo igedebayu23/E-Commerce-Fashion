@@ -6,7 +6,6 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY apps/admin-web/package.json ./apps/admin-web/
 COPY apps/storefront-web/package.json ./apps/storefront-web/
-COPY services/api-gateway/package.json ./services/api-gateway/
 COPY services/commerce-service/package.json ./services/commerce-service/
 COPY services/admin-service/package.json ./services/admin-service/
 COPY services/customer-service/package.json ./services/customer-service/
@@ -22,7 +21,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Generate Prisma Client
-RUN npx prisma generate --schema=packages/database/prisma/schema.prisma
+RUN npx prisma generate --schema=services/customer-service/prisma/schema.prisma
 
 # Build the specific service
 RUN npm run build -w @novarium/customer-service
@@ -33,7 +32,6 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY apps/admin-web/package.json ./apps/admin-web/
 COPY apps/storefront-web/package.json ./apps/storefront-web/
-COPY services/api-gateway/package.json ./services/api-gateway/
 COPY services/commerce-service/package.json ./services/commerce-service/
 COPY services/admin-service/package.json ./services/admin-service/
 COPY services/customer-service/package.json ./services/customer-service/
@@ -56,7 +54,7 @@ COPY --from=builder /app/services/customer-service/package.json ./package.json
 # Copy production node_modules
 COPY --from=prod-deps /app/node_modules ./node_modules
 # Copy the generated Prisma client from builder (not generated during prod-deps)
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/services/customer-service/node_modules/@novarium/customer-prisma ./node_modules/@novarium/customer-prisma
 
 USER customerjs
 EXPOSE 4002

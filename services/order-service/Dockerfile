@@ -4,7 +4,6 @@ WORKDIR /app
 
 # Copy root configurations
 COPY package*.json ./
-COPY tsconfig.json ./
 
 # Copy packages and service
 COPY packages ./packages
@@ -33,8 +32,6 @@ ENV NODE_ENV=production
 
 # Copy built artifacts and dependencies
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
-COPY --from=builder /app/packages/shared/package.json ./packages/shared/package.json
 COPY --from=builder /app/services/order-service/node_modules ./services/order-service/node_modules
 COPY --from=builder /app/services/order-service/dist ./services/order-service/dist
 COPY --from=builder /app/services/order-service/package.json ./services/order-service/package.json

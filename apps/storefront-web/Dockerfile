@@ -6,7 +6,6 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 COPY apps/admin-web/package.json ./apps/admin-web/
 COPY apps/storefront-web/package.json ./apps/storefront-web/
-COPY services/api-gateway/package.json ./services/api-gateway/
 COPY services/commerce-service/package.json ./services/commerce-service/
 COPY services/admin-service/package.json ./services/admin-service/
 COPY services/customer-service/package.json ./services/customer-service/
