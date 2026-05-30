@@ -1,7 +1,11 @@
+/**
+ * services/analytics.service.ts
+ * SRP: Commerce analytics — product counts, recent items. No order/revenue logic.
+ */
 import prisma from "../db/client";
 
 export class AnalyticsService {
-  static async getDashboardMetrics() {
+  static async getCommerceMetrics() {
     const [totalProducts, totalCategories, outOfStock] = await Promise.all([
       prisma.product.count(),
       prisma.category.count(),

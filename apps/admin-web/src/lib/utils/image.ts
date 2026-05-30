@@ -20,5 +20,5 @@ export function getImageUrl(url: string | null | undefined, bucket: string = 'pr
     cleanPath = cleanPath.replace('images/', '');
   }
   
-  return `${GATEWAY_URL}/api/assets/supabase/${bucket}/${cleanPath}`;
+  return `${SUPABASE_URL}/storage/v1/object/public/${bucket}/${cleanPath}`;
 }

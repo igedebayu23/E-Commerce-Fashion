@@ -1,5 +1,5 @@
 import { fail, redirect, isRedirect } from '@sveltejs/kit';
-import { COMMERCE_API_URL, ORDER_API_URL, ADMIN_API_URL } from '@lib/api/config';
+import { COMMERCE_API_URL, ORDER_API_URL, ADMIN_API_URL } from '$lib/api/config';
 
 export const actions = {
     login: async ({ request, cookies }) => {

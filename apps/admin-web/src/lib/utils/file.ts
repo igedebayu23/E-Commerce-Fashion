@@ -1,30 +1,11 @@
-import { COMMERCE_API_URL } from "./config";
-
-export interface UploadResponse {
-  success: boolean;
-  publicUrl?: string;
-  path?: string;
-  error?: string;
-}
-
-export async function uploadImage(params: {
-  bucket: string;
-  path: string;
-  base64: string;
-  contentType: string;
-}): Promise<UploadResponse> {
-  const res = await fetch(`${COMMERCE_API_URL}/uploads`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(params),
-    credentials: "include"
-  });
-
-  return await res.json();
-}
+/**
+ * lib/utils/file.ts
+ * SRP: Pure browser-side file manipulation utilities.
+ * No API calls — only transforms File objects.
+ */
 
 /**
- * Converts a File object to a Base64 string (stripped of prefix)
+ * Converts a File object to a Base64 string (stripped of data URI prefix).
  */
 export function toBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -40,7 +21,7 @@ export function toBase64(file: File): Promise<string> {
 }
 
 /**
- * Generates a unique file path for uploads
+ * Generates a unique file path for storage uploads.
  */
 export function generateFilePath(folder: string, originalName: string): string {
   const fileExt = originalName.split('.').pop();

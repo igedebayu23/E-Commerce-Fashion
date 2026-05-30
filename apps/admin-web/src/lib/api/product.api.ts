@@ -5,7 +5,7 @@
 
 import { COMMERCE_API_URL } from "./config";
 
-export const productsApi = {
+export const productApi = {
   /**
    * Get products with optional search and category filters
    */
@@ -18,7 +18,7 @@ export const productsApi = {
       if (!res.ok) return { data: [], error: `Fetch failed: ${res.status}` };
       return await res.json();
     } catch (e: any) {
-      console.error(`[productsApi] Error:`, e.message);
+      console.error(`[productApi] Error:`, e.message);
       return { data: [], error: e.message };
     }
   },
@@ -32,7 +32,7 @@ export const productsApi = {
       if (!res.ok) return { data: null };
       return await res.json();
     } catch (e: any) {
-      console.error(`[productsApi] Error:`, e.message);
+      console.error(`[productApi] Error:`, e.message);
       return { data: null };
     }
   },

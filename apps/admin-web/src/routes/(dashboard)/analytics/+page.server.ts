@@ -1,4 +1,4 @@
-import { analyticsApi } from '@lib/api/analytics';
+import { analyticsApi } from '$lib/api/analytics.api';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {

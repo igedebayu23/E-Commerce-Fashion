@@ -1,3 +1,8 @@
+@import "./components/ui.css";
+@import "./features/analytics.css";
+@import "./features/order.css";
+@import "./features/products.css";
+
 :root {
   --bg-studio: #f9f9f9;
   --white: #ffffff;

@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { uploadImage, toBase64, generateFilePath } from '@lib/api/uploads';
-  import { getImageUrl } from '@lib/utils/image';
+  import { uploadImage } from '$lib/api/upload.api';
+  import { toBase64, generateFilePath } from '$lib/utils/file';
+  import { getImageUrl } from '$lib/utils/image';
   
   let { 
     bucket = 'products', 

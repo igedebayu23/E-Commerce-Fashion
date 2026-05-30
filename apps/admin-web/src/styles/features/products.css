@@ -1,0 +1,432 @@
+/* --- CATEGORY CARD STYLES --- */
+.collection-card {
+    background: #fff;
+    border-radius: 1.2rem;
+    border: 1px solid #f0f0f0;
+    padding: 0;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .collection-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 40px 80px rgba(0,0,0,0.08);
+    border-color: #e0e0e0;
+  }
+
+  .card-visual {
+    height: 350px;
+    background: #f8f8f8;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .collection-card:hover .card-visual img {
+    transform: scale(1.05);
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    opacity: 0.05;
+    font-weight: 900;
+  }
+
+  .visual-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 3rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+    color: #fff;
+  }
+
+  .product-count {
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+  }
+
+  .category-name {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+  }
+
+  .card-content {
+    padding: 2.5rem;
+  }
+
+  .description {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .manage-link {
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #111;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+/* --- PRODUCT FILTER STYLES --- */
+.segmentation-nav {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-bottom: 1rem;
+    overflow-x: auto;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .nav-item {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #bbb;
+    padding-bottom: 1.5rem;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-item:hover {
+    color: #111;
+  }
+
+  .nav-item.active {
+    color: #111;
+    border-bottom-color: #111;
+  }
+
+/* --- PRODUCT GRID STYLES --- */
+.entry-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2.5rem;
+  }
+
+  .product-entry {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .entry-image {
+    width: 100%;
+    aspect-ratio: 4/5;
+    background: #f7f7f7;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .entry-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .product-entry:hover .entry-image img {
+    transform: scale(1.05);
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    opacity: 0.1;
+    font-weight: 900;
+    background: #f0f0f0;
+  }
+
+  .entry-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .info-main {
+    flex: 1;
+    min-width: 0;
+    padding-right: 1rem;
+  }
+
+  .entry-name {
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .entry-meta {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #bbb;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  .entry-price {
+    font-weight: 800;
+    font-size: 0.9rem;
+  }
+
+  .empty-archive {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 10rem 0;
+    opacity: 0.1;
+  }
+
+  .empty-archive h2 {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+  }
+
+/* --- CATEGORY DETAIL PAGE STYLES --- */
+.product-mini-card {
+		background: #fff;
+		border: 1px solid #f0f0f0;
+		border-radius: 1.2rem;
+		overflow: hidden;
+		transition: transform 0.3s ease;
+	}
+	.product-mini-card:hover { transform: scale(1.02); }
+	.mini-card-image { height: 180px; background: #f8f8f8; }
+	.mini-card-image img { width: 100%; height: 100%; object-fit: cover; }
+	.mini-card-info { padding: 1.2rem; }
+	.mini-name { font-weight: 800; font-size: 0.85rem; }
+	.mini-meta { font-size: 0.75rem; color: #10b981; font-weight: 700; margin-top: 0.3rem; }
+
+	.modal-overlay {
+		position: fixed;
+		inset: 0;
+		background: rgba(0,0,0,0.4);
+		backdrop-filter: blur(8px);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 1000;
+		padding: 2rem;
+	}
+	.modal-content {
+		background: #fff;
+		width: 100%;
+		max-width: 900px;
+		max-height: 80vh;
+		border-radius: 2rem;
+		padding: 3rem;
+		overflow-y: auto;
+		box-shadow: 0 40px 100px rgba(0,0,0,0.15);
+	}
+	.modal-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 1.5rem;
+	}
+	.assignment-card {
+		background: none;
+		border: 1px solid #f0f0f0;
+		padding: 0;
+		border-radius: 1rem;
+		overflow: hidden;
+		cursor: pointer;
+		width: 100%;
+		transition: all 0.3s ease;
+	}
+	.assignment-card:hover { border-color: #000; transform: translateY(-5px); }
+	.assignment-image { height: 150px; background: #f8f8f8; }
+	.assignment-image img { width: 100%; height: 100%; object-fit: cover; }
+	
+	.close-btn { background: #f5f5f5; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-weight: 900; }
+
+
+/* --- PRODUCTS PAGE LAYOUTS & INVENTORY STYLES --- */
+.product-form-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+}
+.product-textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+.product-inventory-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+.product-size-inventory-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #aaa;
+  text-transform: uppercase;
+}
+.product-size-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.product-size-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #fdfdfd;
+  padding: 0.8rem 1.2rem;
+  border-radius: 1rem;
+  border: 1px solid #f0f0f0;
+}
+.product-size-label {
+  font-weight: 800;
+  font-size: 0.85rem;
+  width: 30px;
+}
+.product-size-input {
+  padding: 0.5rem;
+  text-align: center;
+}
+.product-status-checkbox-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.product-status-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.product-status-checkbox {
+  width: 18px;
+  height: 18px;
+  accent-color: #000;
+}
+.product-sidebar-btn-container {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.product-btn-delete {
+  color: #ff4d4d;
+  border-color: #ffeded;
+}
+.product-btn-secondary-center {
+  text-align: center;
+}
+
+
+/* --- CATEGORY DETAIL INLINE REPLACEMENTS --- */
+.category-collection-title {
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin: 0;
+}
+.category-assign-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.7rem;
+}
+.category-collection-content {
+  margin-top: 5rem;
+}
+.category-content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+.category-assigned-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.category-empty-state {
+  grid-column: span 3;
+  padding: 4rem;
+  text-align: center;
+  background: #fdfdfd;
+  border: 2px dashed #f0f0f0;
+  border-radius: 1.5rem;
+  color: #ccc;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin: 0;
+  letter-spacing: -0.04em;
+}
+.modal-filter-input {
+  margin-bottom: 2rem;
+  background: #f8f8f8;
+  border: none;
+  padding: 1rem 1.5rem;
+}
+.modal-empty-search-state {
+  text-align: center;
+  padding: 4rem 0;
+  color: #ccc;
+  font-weight: 700;
+}
+.assignment-card-info-container {
+  text-align: left;
+  padding: 1rem;
+}
+.assignment-card-name {
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+.assignment-card-current-category {
+  font-size: 0.65rem;
+  color: #aaa;
+  margin-top: 0.2rem;
+  font-weight: 700;
+}

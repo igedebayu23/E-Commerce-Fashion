@@ -1,4 +1,4 @@
-import { productsApi } from '@lib/api/products';
+import { productApi } from '$lib/api/product.api';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url, fetch }) => {
@@ -6,8 +6,8 @@ export const load: PageServerLoad = async ({ url, fetch }) => {
 	const categoryId = url.searchParams.get('category') || '';
 	
 	const [productsResult, categoriesResult] = await Promise.all([
-		productsApi.getProducts(fetch, query, categoryId),
-		productsApi.getCategories(fetch)
+		productApi.getProducts(fetch, query, categoryId),
+		productApi.getCategories(fetch)
 	]);
 
 	return {

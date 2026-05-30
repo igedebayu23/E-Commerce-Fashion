@@ -1,3 +1,9 @@
+/**
+ * services/order.service.ts
+ * SRP: Admin read-only view of orders from the shared database.
+ * This service reads order data directly from the DB for admin dashboard use.
+ * Write operations (status updates, shipping) are delegated to order-service via API.
+ */
 import { prisma } from '../db/client';
 import type { OrderStatus } from '@prisma/client';
 

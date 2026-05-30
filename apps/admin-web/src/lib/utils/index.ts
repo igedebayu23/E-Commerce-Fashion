@@ -1,1 +1,5 @@
-// place files you want to import through the `$lib` alias in this folder.
+/**
+ * lib/utils — Pure utility functions (no API calls, no side effects)
+ */
+export * from './image';
+export * from './file';

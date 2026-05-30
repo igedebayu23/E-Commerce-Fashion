@@ -1,3 +1,8 @@
+/**
+ * services/auth.service.ts
+ * SRP: Admin authentication — login verification and session token generation.
+ * Only handles AdminUser entities, not storefront Customer entities.
+ */
 import { prisma } from '../db/client';
 import { verifyPassword, generateToken } from '@novarium/shared';
 import { env } from '../config/env';

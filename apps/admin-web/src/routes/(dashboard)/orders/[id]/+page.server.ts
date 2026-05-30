@@ -1,4 +1,4 @@
-import { COMMERCE_API_URL, ORDER_API_URL, ADMIN_API_URL } from '@lib/api/config';
+import { COMMERCE_API_URL, ORDER_API_URL, ADMIN_API_URL } from '$lib/api/config';
 import type { PageServerLoad, Actions } from './$types';
 import { fail } from '@sveltejs/kit';
 
@@ -17,7 +17,7 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
     if (carriersRes.ok) carriersData = await carriersRes.json();
 
     if (orderData?.data?.status && ['SHIPPED', 'DELIVERED'].includes(orderData.data.status)) {
-      const trackRes = await fetch(`${PUBLIC_API_URL}/shipping/track/${params.id}`);
+      const trackRes = await fetch(`${ORDER_API_URL}/shipping/track/${params.id}`);
       if (trackRes.ok) {
         const trackData = await trackRes.json();
         tracking = trackData.data;

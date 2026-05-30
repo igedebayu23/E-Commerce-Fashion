@@ -5,7 +5,7 @@
 
 import { ORDER_API_URL } from "./config";
 
-export const ordersApi = {
+export const orderApi = {
   /**
    * Get all orders or filter by limit
    */
@@ -18,7 +18,7 @@ export const ordersApi = {
       if (!res.ok) return { data: [], error: `Fetch failed: ${res.status}` };
       return await res.json();
     } catch (e: any) {
-      console.error(`[ordersApi] Error:`, e.message);
+      console.error(`[orderApi] Error:`, e.message);
       return { data: [], error: e.message };
     }
   },
@@ -32,7 +32,7 @@ export const ordersApi = {
       if (!res.ok) return { data: null };
       return await res.json();
     } catch (e: any) {
-      console.error(`[ordersApi] Error:`, e.message);
+      console.error(`[orderApi] Error:`, e.message);
       return { data: null };
     }
   }

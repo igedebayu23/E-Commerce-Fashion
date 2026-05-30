@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { ADMIN_API_URL } from '@lib/api/config';
+import { ADMIN_API_URL } from '$lib/api/config';
 
 export const handle = async ({ event, resolve }) => {
     event.locals.user = null;

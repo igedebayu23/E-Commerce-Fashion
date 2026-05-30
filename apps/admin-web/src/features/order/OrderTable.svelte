@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation';
-  import StatusPill from '@components/atoms/StatusPill.svelte';
+  import StatusPill from '../../components/ui/StatusPill.svelte';
 
   let { orders } = $props<{ orders: any[] }>();
 

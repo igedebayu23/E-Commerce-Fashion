@@ -1,8 +1,8 @@
 <script lang="ts">
 	let { data } = $props();
 	import { enhance } from '$app/forms';
-	import { COMMERCE_API_URL, ORDER_API_URL, ADMIN_API_URL } from '@lib/api/config';
-	import UploadImage from '@components/atoms/UploadImage.svelte';
+	import { COMMERCE_API_URL, ORDER_API_URL, ADMIN_API_URL } from '$lib/api/config';
+	import UploadImage from '@components/ui/UploadImage.svelte';
 
 	let imageUrl = $state('');
 
@@ -16,7 +16,7 @@
 
 <div class="form-card">
 	<form method="POST" use:enhance>
-		<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 4rem;">
+		<div class="product-form-layout">
 			<div class="form-main-section">
 				<div class="input-group">
 					<label class="input-label" for="name">Product Name</label>
@@ -35,14 +35,13 @@
 					<textarea 
 						id="description" 
 						name="description" 
-						class="input-control" 
-						style="min-height: 150px; resize: vertical;"
+						class="input-control product-textarea"
 						placeholder="Describe the silhouette and material..."
 						required
 					></textarea>
 				</div>
 
-				<div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+				<div class="product-inventory-layout">
 					<div class="input-group">
 						<label class="input-label" for="price">Price (IDR)</label>
 						<input 
@@ -59,17 +58,11 @@
 					<div class="input-group">
 						<div class="input-label">Initial Size-Based Inventory</div>
 
-						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+						<div class="product-size-grid">
 							{#each sizes as size}
-								<div style="display: flex; align-items: center; gap: 1rem; background: #fdfdfd; padding: 0.8rem 1.2rem; border-radius: 1rem; border: 1px solid #f0f0f0;">
-									<span style="font-weight: 800; font-size: 0.85rem; width: 30px;">{size}</span>
-									<input 
-										type="number" 
-										name="sizeStocks" 
-										class="input-control" 
-										style="padding: 0.5rem; text-align: center;"
-										value="0"
-									/>
+								<div class="product-size-card">
+									<span class="product-size-label">{size}</span>
+									<input type="number" name="sizeStocks" value="0" class="input-control product-size-input" />
 									<input type="hidden" name="sizeOptions" value={size} />
 								</div>
 							{/each}
@@ -98,11 +91,11 @@
 					<input type="hidden" name="imageUrl" value={imageUrl} />
 				</div>
 
-				<div style="margin-top: 4rem; display: flex; flex-direction: column; gap: 1rem;">
+				<div class="product-sidebar-btn-container">
 					<button type="submit" class="btn-studio">
 						Create Entry
 					</button>
-					<a href="/products" class="btn-studio-secondary" style="text-align: center;">
+					<a href="/products" class="btn-studio-secondary product-btn-secondary-center">
 						Discard Changes
 					</a>
 				</div>
