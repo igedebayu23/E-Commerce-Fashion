@@ -74,6 +74,11 @@ services:
     build:
       context: .
       dockerfile: apps/storefront-web/Dockerfile
+      args:
+        - NEXT_PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
+        - NEXT_PUBLIC_COMMERCE_API_URL=http://localhost:3001/api/commerce
+        - NEXT_PUBLIC_CUSTOMER_API_URL=http://localhost:4002/api/customer
+        - NEXT_PUBLIC_ORDER_API_URL=http://localhost:4003/api/orders
     ports:
       - "${STOREFRONT_PORT:-3000}:3000"
     environment:
@@ -96,6 +101,13 @@ services:
     build:
       context: .
       dockerfile: apps/admin-web/Dockerfile
+      args:
+        - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
+        - PUBLIC_SUPABASE_ANON_KEY=${PUBLIC_SUPABASE_ANON_KEY}
+        - PUBLIC_STOREFRONT_URL=http://localhost:3000
+        - PUBLIC_COMMERCE_API_URL=http://localhost:3001/api/commerce/admin
+        - PUBLIC_ADMIN_API_URL=http://localhost:4001/api/admin
+        - PUBLIC_ORDER_API_URL=http://localhost:4003/api/orders/admin
     ports:
       - "${ADMIN_DASHBOARD_PORT:-4000}:4000"
     environment:
