@@ -12,8 +12,8 @@ export function getImageUrl(url: string | null | undefined, bucket: string = 'pr
   if (!url) return '';
   if (url.startsWith('http')) return url;
   
-  const GATEWAY_URL = env.PUBLIC_GATEWAY_URL;
-  if (!GATEWAY_URL) return '';
+  const SUPABASE_URL = env.PUBLIC_SUPABASE_URL;
+  if (!SUPABASE_URL) return '';
 
   let cleanPath = url.startsWith('/') ? url.slice(1) : url;
   if (cleanPath.startsWith('images/')) {
