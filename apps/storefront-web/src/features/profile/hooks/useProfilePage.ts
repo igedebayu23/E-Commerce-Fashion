@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useEffect, useCallback, useMemo } from "react";
 import { useAuth } from "@/core/providers/AuthContext";
 import { useProfileData } from "@/core/providers/ProfileDataContext";
@@ -25,14 +25,15 @@ export function useProfilePage() {
   } = useProfileData();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   
   const activeTab = useMemo(() => toTab(searchParams.get("tab")), [searchParams]);
 
   const setActiveTab = useCallback((tab: TabId) => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(searchParams.toString());
     params.set("tab", tab);
-    router.push(`?${params.toString()}`, { scroll: false });
-  }, [router]);
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
+  }, [router, pathname, searchParams]);
 
   useEffect(() => {
     if (!isLoading && !user) {
