@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useColorTheme } from "@/core/providers/ColorContext";
 import AnimatedWave from "@/shared/components/animations/AnimatedWave";
 import ClothingCarousel from "@/shared/components/animations/ClothingCarousel";
-import { getTees, getJeans } from "@/shared/api/actions/catalogue";
+import { getTees, getJeans } from "@/shared/actions/catalogue";
 import type { CatalogueProduct } from "@/features/catalogue/types";
 
 export default function EssentializedSection() {

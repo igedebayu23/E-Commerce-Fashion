@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import ProfilePage from "@/features/auth/profile/ProfilePage";
+import { ProfilePage } from "@/features/profile";
 import "@/shared/styles/profile.css";
 import "@/shared/styles/profile-views.css";
 

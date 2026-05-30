@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { getProducts } from "@/shared/api/actions/catalogue";
+import { getProducts } from "@/shared/actions/catalogue";
 import type { CatalogueProduct } from "@/features/catalogue/types";
 
 import FilterBar from "@/shared/components/ui/FilterBar";

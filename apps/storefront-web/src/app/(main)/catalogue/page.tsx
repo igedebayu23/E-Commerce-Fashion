@@ -8,7 +8,7 @@
 import type { Metadata } from "next";
 import CatalogueHero from "@/features/catalogue/components/CatalogueHero";
 import CatalogueClient from "@/features/catalogue/components/CatalogueClient";
-import { getProducts } from "@/shared/api/actions/catalogue";
+import { getProducts } from "@/shared/actions/catalogue";
 import styles from "@/shared/styles/catalogue-page.module.css";
 
 export const metadata: Metadata = {

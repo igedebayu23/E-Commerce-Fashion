@@ -1,15 +1,21 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 import SectionLabel from "@/shared/components/ui/SectionLabel";
 import AnimatedText from "@/shared/components/ui/AnimatedText";
 import GlowOrb from "@/shared/components/ui/GlowOrb";
 import InfiniteMarquee from "@/shared/components/animations/InfiniteMarquee";
+import { getCarouselImages } from "@/shared/actions/catalogue";
 
 export default function ScienceSection() {
   const containerRef = useRef<HTMLElement>(null);
+  const [carouselImages, setCarouselImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    getCarouselImages().then(setCarouselImages);
+  }, []);
 
   // Scroll animations
   const { scrollYProgress } = useScroll({
@@ -144,7 +150,7 @@ export default function ScienceSection() {
           zIndex: 5,
         }}
       >
-        <InfiniteMarquee speed={30} itemHeight={400} />
+        <InfiniteMarquee images={carouselImages} speed={30} itemHeight={400} />
       </motion.div>
     </section>
   );

@@ -1,31 +1,27 @@
 "use client";
-
+/**
+ * shared/components/animations/InfiniteMarquee.tsx
+ * SRP: Pure presentational animation component.
+ * Receives image URLs via props — does NOT fetch data itself.
+ * Callers are responsible for providing images.
+ */
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { getCarouselImages } from "@/shared/api/actions/catalogue";
 import Image from "next/image";
-
 import { getImageUrl } from "@/shared/utils/image-utils";
 
 interface InfiniteMarqueeProps {
+  images: string[];
   /** Animation duration in seconds */
   speed?: number;
   /** Height of each item */
   itemHeight?: number;
 }
 
-export default function InfiniteMarquee({ speed = 25, itemHeight = 380 }: InfiniteMarqueeProps) {
-  const [images, setImages] = useState<string[]>([]);
-
-  useEffect(() => {
-    async function loadImages() {
-      const data = await getCarouselImages();
-      setImages([...data, ...data]); // duplicate for seamless loop
-    }
-    loadImages();
-  }, []);
-
+export default function InfiniteMarquee({ images, speed = 25, itemHeight = 380 }: InfiniteMarqueeProps) {
   if (images.length === 0) return null;
+
+  // Duplicate for seamless loop
+  const loopedImages = [...images, ...images];
 
   return (
     <div style={{ position: "relative", width: "100%", overflow: "hidden", padding: "2rem 0" }}>
@@ -34,7 +30,7 @@ export default function InfiniteMarquee({ speed = 25, itemHeight = 380 }: Infini
         animate={{ x: ["-50%", "0%"] }}
         transition={{ duration: speed, repeat: Infinity, ease: "linear" }}
       >
-        {images.map((src, idx) => (
+        {loopedImages.map((src, idx) => (
           <div
             key={idx}
             style={{
@@ -50,7 +46,7 @@ export default function InfiniteMarquee({ speed = 25, itemHeight = 380 }: Infini
               src={getImageUrl(src || "model1.jpg")}
               alt={`Featured item ${idx + 1}`}
               width={288}
-              height={itemHeight * 0.9}
+              height={Math.round(itemHeight * 0.9)}
               style={{
                 objectFit: "contain",
                 filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.5))",
@@ -62,4 +58,3 @@ export default function InfiniteMarquee({ speed = 25, itemHeight = 380 }: Infini
     </div>
   );
 }
-
