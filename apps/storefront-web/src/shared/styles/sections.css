@@ -564,6 +564,21 @@
   font-size: 0.8rem;
 }
 
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 2rem;
+  text-align: left;
+  max-width: 900px;
+  margin: 0 auto 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
 /* ===== STYLE OUTLOOK BENTO GRID ===== */
 .bento-grid-container {
   display: grid;
@@ -596,6 +611,7 @@
 .bento-card {
   position: relative;
   width: 100%;
+  height: 100%;
   border-radius: 1.5rem;
   overflow: hidden;
   background: #1a1a1a;

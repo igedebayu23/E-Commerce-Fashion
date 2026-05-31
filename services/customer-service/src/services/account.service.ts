@@ -1,6 +1,6 @@
 import { prisma } from '../db/client';
 
-const GATEWAY_URL = process.env.INTERNAL_API_URL || 'http://api-gateway:8000/api/storefront';
+const GATEWAY_URL = process.env.INTERNAL_COMMERCE_API_URL || process.env.COMMERCE_SERVICE_URL || 'http://commerce-service:3001/api/commerce';
 const INTERNAL_KEY = process.env.INTERNAL_SERVICE_KEY;
 
 export class AccountService {
@@ -40,16 +40,35 @@ export class AccountService {
     const mappedOrders = orders.map((o) => {
       const hydratedItems = o.items.map(item => {
         const product = products.find((p: any) => p.id === item.productId);
+        let color = '';
+        if (product?.variants) {
+          const variant = product.variants.find((v: any) => v.id === item.productVariantId);
+          if (variant?.color) color = variant.color;
+        }
+        if (!color && product?.colors && product.colors.length > 0) {
+          color = product.colors[0];
+        }
         return {
           ...item,
           name: product?.name || 'Pesanan',
+          color,
           imageUrl: product?.imageUrl || (product?.image && product.image[0]) || (product?.images && product.images[0]) || '/images/about/model1.png',
           unitPrice: Number(item.price)
         };
       });
 
+      let address = undefined;
+      if (o.addressSnapshot) {
+        try {
+          address = typeof o.addressSnapshot === 'string' ? JSON.parse(o.addressSnapshot) : o.addressSnapshot;
+        } catch (e) {
+          console.error("Failed to parse addressSnapshot", e);
+        }
+      }
+
       return {
         ...o,
+        address,
         total: Number(o.totalAmount),
         items: hydratedItems
       };

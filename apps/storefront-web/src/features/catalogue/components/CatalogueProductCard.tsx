@@ -37,7 +37,7 @@ export default function CatalogueProductCard({ product, onClick }: Props) {
           src={product.images?.[0] || product.image || "/images/about/model1.png"}
           alt={product.name}
           fill
-          className="object-cover object-top"
+          className="object-contain"
           sizes="(max-width: 768px) 50vw, 33vw"
         />
 

@@ -5,7 +5,7 @@ import type { CategoryFilter } from "@/shared/api/catalogue";
 import CatalogueFilterSidebar from "./CatalogueFilterSidebar";
 import CatalogueGrid from "./CatalogueGrid";
 import ProductDetailModal from "./ProductDetailModal";
-import CatalogueWaveSection from "./CatalogueWaveSection";
+
 
 import { useCatalogue } from "../hooks/useCatalogue";
 
@@ -20,7 +20,7 @@ export default function CatalogueClient({ initialProducts }: Props) {
 
   return (
     <div className="catalogue-page">
-      <CatalogueWaveSection />
+
       {/* Products body */}
       <div id="catalogue-grid" className="catalogue-body">
         <CatalogueFilterSidebar

@@ -132,7 +132,7 @@ export default function CatalogueHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         >
-          Catalogue
+          Katalog
         </motion.h1>
 
         <motion.p
@@ -147,7 +147,7 @@ export default function CatalogueHero() {
             marginTop: "1.5rem",
           }}
         >
-          Essentialized daily wear — crafted for purpose
+          Essentialized daily wear — dirancang dengan purpose
         </motion.p>
       </motion.div>
 

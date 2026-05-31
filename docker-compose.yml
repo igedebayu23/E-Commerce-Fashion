@@ -48,6 +48,7 @@ services:
       - JWT_SECRET=${JWT_SECRET}
       - INTERNAL_SERVICE_KEY=${INTERNAL_SERVICE_KEY:-novarium-internal-mesh-key-2026}
       - COMMERCE_SERVICE_URL=http://commerce-service:3001
+      - INTERNAL_COMMERCE_API_URL=http://commerce-service:3001/api/commerce
       - ORDER_SERVICE_URL=http://order-service:4003
       - MIDTRANS_SERVER_KEY=${MIDTRANS_SERVER_KEY}
       - MIDTRANS_IS_PRODUCTION=${MIDTRANS_IS_PRODUCTION:-false}

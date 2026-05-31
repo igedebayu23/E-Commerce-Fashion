@@ -45,6 +45,17 @@
   margin-bottom: 0.8rem;
 }
 
+/* Desktop: pills stacked vertically (default) */
+.sidebar-pills-row {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Desktop: decorative info card — shown by default */
+.sidebar-info-card {
+  display: block;
+}
+
 .sidebar-pill {
   display: flex;
   align-items: center;
@@ -603,4 +614,216 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
+}
+
+/* ================================================================
+   CATALOGUE — MOBILE RESPONSIVE
+   ================================================================ */
+@media (max-width: 768px) {
+
+  /* ── Hero ── */
+  .catalogue-hero {
+    height: 55svh;
+    height: 55vh;
+    min-height: 260px;
+  }
+
+  .catalogue-hero-title {
+    font-size: clamp(3.5rem, 20vw, 7rem);
+    letter-spacing: -0.05em;
+  }
+
+  .catalogue-hero-subtitle {
+    font-size: 0.78rem;
+    padding: 0 1.5rem;
+  }
+
+  .catalogue-hero-back {
+    top: 1.2rem;
+    left: 1.2rem;
+  }
+
+  .catalogue-hero-corner {
+    top: 1.2rem;
+    right: 1.2rem;
+    font-size: 0.62rem;
+  }
+
+  .catalogue-hero-ring-1 {
+    width: 300px;
+    height: 300px;
+  }
+  .catalogue-hero-ring-2 {
+    width: 200px;
+    height: 200px;
+  }
+
+  /* ── Body layout ── */
+  .catalogue-body {
+    flex-direction: column;
+    padding: 1.2rem 1rem 5rem;
+  }
+
+  /* ── Sidebar → horizontal filter pills on mobile ── */
+  .catalogue-sidebar {
+    position: static;
+    flex: none;
+    padding-right: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .catalogue-sidebar-title {
+    display: none; /* hidden on mobile, pills are self-explanatory */
+  }
+
+  /* Stack sidebar sections horizontally */
+  .sidebar-section {
+    margin-bottom: 1rem;
+  }
+
+  .sidebar-section-label {
+    font-size: 0.65rem;
+    margin-bottom: 0.6rem;
+  }
+
+  /* Make pills scroll horizontally */
+  .sidebar-pills-row {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+
+  .sidebar-pills-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sidebar-pill {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0.45rem 1rem;
+    font-size: 0.78rem;
+    margin-bottom: 0;
+  }
+
+  .sidebar-pill:hover {
+    transform: none; /* no translateX on mobile */
+  }
+
+  /* Hide decorative info card on mobile */
+  .sidebar-info-card {
+    display: none;
+  }
+
+  /* Hide the filter divider between sections on mobile */
+  .catalogue-sidebar > div[style*="height: 1px"],
+  .catalogue-sidebar > div[style*="height:1px"] {
+    display: none;
+  }
+
+  /* ── Product grid: 2 cols ── */
+  .catalogue-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+
+  .cat-product-info {
+    padding: 0.8rem 0.9rem 1rem;
+  }
+
+  .cat-product-name {
+    font-size: 0.82rem;
+    letter-spacing: -0.01em;
+  }
+
+  .cat-product-price {
+    font-size: 0.95rem;
+  }
+
+  .cat-product-category {
+    font-size: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Quick-add always visible on mobile (no hover) */
+  .cat-quick-add {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    font-size: 0.68rem;
+    padding: 0.5rem 1.2rem;
+  }
+
+  /* ── Catalogue banner ── */
+  .catalogue-banner {
+    height: 35vh;
+    min-height: 200px;
+  }
+
+  .catalogue-banner-title {
+    font-size: clamp(1.8rem, 8vw, 3rem);
+  }
+
+  .catalogue-banner-sub {
+    font-size: 0.85rem;
+    padding: 0 1rem;
+  }
+
+  /* ── Modal — bottom sheet ── */
+  .modal-backdrop {
+    align-items: flex-end;
+  }
+
+  .modal-sheet {
+    grid-template-columns: 1fr;
+    border-radius: 1.5rem 1.5rem 0 0;
+    max-height: 92svh;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .modal-image-col {
+    border-radius: 1.5rem 1.5rem 0 0;
+    min-height: 52vw;
+    max-height: 48vh;
+  }
+
+  .modal-detail-col {
+    padding: 1.5rem 1.2rem 3rem;
+  }
+
+  .modal-product-name {
+    font-size: clamp(1.3rem, 6vw, 1.8rem) !important;
+  }
+
+  .modal-sizes-row {
+    gap: 0.5rem !important;
+  }
+
+  .modal-size-btn {
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .modal-add-btn {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .catalogue-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+  }
+
+  .catalogue-hero-title {
+    font-size: clamp(3rem, 22vw, 5.5rem);
+  }
 }

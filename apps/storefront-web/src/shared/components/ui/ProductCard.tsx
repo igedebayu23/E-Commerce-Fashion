@@ -48,7 +48,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           src={getImageUrl(product.image || "/images/about/model1.png")}
           alt={product.name}
           fill
-          className="object-cover object-top"
+          className="object-contain"
           sizes="(max-width: 768px) 100vw, 300px"
         />
         {/* Hover overlay shine effect */}

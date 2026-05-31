@@ -3,8 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { CheckCircle2, Clock, ArrowLeft, RefreshCw, CreditCard } from "lucide-react";
-import Navbar from "@/shared/components/layout/Navbar";
-import Footer from "@/shared/components/layout/Footer";
+
 import { getImageUrl } from "@/shared/utils/image-utils";
 import "@/shared/styles/payment-status-detail.css";
 import { usePaymentStatus } from "../hooks/usePaymentStatus";
@@ -74,7 +73,6 @@ export function PaymentStatusClient() {
 
   return (
     <>
-      <Navbar />
       <main className="payment-status-page">
         <div className="payment-container">
           <div className="payment-header">
@@ -122,7 +120,7 @@ export function PaymentStatusClient() {
               <h3 style={{ fontSize: "1rem", fontWeight: "700", marginBottom: "1rem", borderBottom: "1px solid #eee", paddingBottom: "0.5rem" }}>Rincian Pesanan</h3>
               <div className="payment-products-list" style={{ marginBottom: "2rem" }}>
                 {localOrder.items.map((item) => {
-                  const productImg = getImageUrl(item.product?.imageUrl || item.product?.image?.[0] || item.product?.images?.[0]) || '/images/about/model1.png';
+                  const productImg = getImageUrl(item.imageUrl || item.product?.imageUrl || item.product?.image?.[0] || item.product?.images?.[0]) || '/images/about/model1.png';
                   return (
                     <div key={item.productId} style={{ display: "flex", gap: "1rem", padding: "0.75rem 0", borderBottom: "1px solid #f9f9f9" }}>
                       <div style={{ width: 48, height: 56, borderRadius: 4, overflow: "hidden", position: "relative", backgroundColor: "#f5f5f5" }}>
@@ -134,7 +132,7 @@ export function PaymentStatusClient() {
                       </div>
                       <div style={{ flex: 1 }}>
                         <p style={{ fontSize: "0.85rem", fontWeight: 700, marginBottom: "0.2rem" }}>{item.name}</p>
-                        <p style={{ fontSize: "0.75rem", color: "#666" }}>{item.size} · {item.color} · {item.quantity}x</p>
+                        <p style={{ fontSize: "0.75rem", color: "#666" }}>{[item.size, item.color, `${item.quantity}x`].filter(Boolean).join(' · ')}</p>
                       </div>
                       <div style={{ fontSize: "0.85rem", fontWeight: 600 }}>
                         {formatPrice(item.unitPrice * item.quantity)}
@@ -246,7 +244,6 @@ export function PaymentStatusClient() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

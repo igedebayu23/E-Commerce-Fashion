@@ -81,6 +81,7 @@ export default function HeroSection() {
 
       {/* Center hint text */}
       <motion.p
+        className="hero-cursor-hint"
         initial={{ opacity: 0 }}
         animate={{ opacity: showContent ? 0.3 : 0 }}
         transition={{ duration: 1, delay: 1 }}
@@ -97,11 +98,12 @@ export default function HeroSection() {
           pointerEvents: "none",
         }}
       >
-        move your cursor to explore
+        move kursor buat explore
       </motion.p>
 
       {/* Main title with parallax */}
       <motion.div
+        className="hero-title-block"
         style={{
           y: yTitle,
           opacity: opacityContent,

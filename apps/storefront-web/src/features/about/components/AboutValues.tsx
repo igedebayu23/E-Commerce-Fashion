@@ -46,7 +46,7 @@ export default function AboutValues() {
                 marginTop: "1.5rem"
               }}
             >
-              What<br />Defines Us
+              Apa yang<br />Ngedefine Kita
             </motion.h2>
           </div>
 
@@ -57,8 +57,8 @@ export default function AboutValues() {
             style={{ flex: 1, textAlign: "right" }}
           >
             <p style={{ maxWidth: "350px", marginLeft: "auto", fontSize: "1rem", lineHeight: 1.6, color: "rgba(255,255,255,0.5)", fontWeight: 300 }}>
-              At Novarium, we believe that the best products are born from a balance
-              of heritage, ethics, and modern engineering.
+              Di Novarium, kita percaya produk terbaik lahir dari keseimbangan 
+              antara heritage, etika, dan modern engineering.
             </p>
           </motion.div>
         </div>

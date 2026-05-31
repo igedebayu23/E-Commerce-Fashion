@@ -16,11 +16,11 @@ export default function AboutHero({ scrollYProgress }: AboutHeroProps) {
   const scaleTitle = useTransform(scrollYProgress, [0, 0.2], [1, 1.1]);
 
   return (
-    <section 
-      style={{ 
-        height: "100vh", 
-        display: "flex", 
-        flexDirection: "column", 
+    <section
+      style={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
         position: "relative",
@@ -77,17 +77,17 @@ export default function AboutHero({ scrollYProgress }: AboutHeroProps) {
           transition={{ duration: 1, delay: 0.8 }}
           style={{ marginBottom: "2rem" }}
         >
-          <span style={{ 
-            fontSize: "0.75rem", 
-            letterSpacing: "0.4em", 
-            textTransform: "uppercase", 
+          <span style={{
+            fontSize: "0.75rem",
+            letterSpacing: "0.4em",
+            textTransform: "uppercase",
             color: "rgba(255,255,255,0.4)",
             fontWeight: 500,
             border: "1px solid rgba(255,255,255,0.1)",
             padding: "0.5rem 1.2rem",
             borderRadius: "2rem"
           }}>
-            The Heritage & Vision
+            Heritage & Visi Kita
           </span>
         </motion.div>
 
@@ -95,17 +95,17 @@ export default function AboutHero({ scrollYProgress }: AboutHeroProps) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 1, ease: [0.16, 1, 0.3, 1] }}
-          style={{ 
-            fontSize: "clamp(4.5rem, 11vw, 9rem)", 
-            fontWeight: 800, 
-            letterSpacing: "-0.04em", 
+          style={{
+            fontSize: "clamp(4.5rem, 11vw, 9rem)",
+            fontWeight: 800,
+            letterSpacing: "-0.04em",
             lineHeight: 0.9,
             margin: 0,
             color: "#fff",
           }}
         >
-          Essence Of<br />
-          <span style={{ 
+          Essence Dari<br />
+          <span style={{
             background: "linear-gradient(to right, #fff, rgba(255,255,255,0.5))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent"
@@ -118,7 +118,7 @@ export default function AboutHero({ scrollYProgress }: AboutHeroProps) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 1.3 }}
-          style={{ 
+          style={{
             marginTop: "3rem",
             fontSize: "1.1rem",
             color: "rgba(255,255,255,0.5)",
@@ -128,9 +128,9 @@ export default function AboutHero({ scrollYProgress }: AboutHeroProps) {
             letterSpacing: "0.01em"
           }}
         >
-          Born from a singular vision to redefine the modern wardrobe. 
-          We craft essentials that transcend time, engineering comfort 
-          into every stitch.
+          Lahir dari satu visi untuk me-redefine modern wardrobe.
+          Kita membuat essentials yang timeless, dengan kenyamanan
+          di setiap jahitannya.
         </motion.p>
       </motion.div>
 

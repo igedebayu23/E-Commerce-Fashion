@@ -53,7 +53,7 @@ export default function ScienceSection() {
 
               <motion.div style={{ y: yHeading1 }}>
                 <AnimatedText
-                  text="The Science"
+                  text="Sains"
                   as="h2"
                   style={{
                     fontSize: "clamp(3rem, 7vw, 7rem)",
@@ -67,7 +67,7 @@ export default function ScienceSection() {
               
               <motion.div style={{ y: yHeading2 }}>
                 <AnimatedText
-                  text="Of Comfort"
+                  text="Di Balik Kenyamanan"
                   as="h2"
                   style={{
                     fontSize: "clamp(3rem, 7vw, 7rem)",
@@ -89,8 +89,7 @@ export default function ScienceSection() {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <p style={{ fontSize: "1.1rem", lineHeight: 1.6, color: "rgba(255,255,255,0.7)" }}>
-                We engineer our fabrics at the molecular level. Blending modal, elastane, and long-staple cotton to
-                create a drape that never loses its structure.
+                Kita merancang fabric di level molekuler. Campuran modal, elastane, dan long-staple cotton bikin bajunya jatuh pas dan nggak gampang melar.
               </p>
             </motion.div>
           </div>
@@ -112,16 +111,16 @@ export default function ScienceSection() {
           <motion.div style={{ y: yFeatures, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "2rem", marginTop: "3rem" }}>
             {[
               {
-                title: "Thermoregulation",
-                desc: "Adapts to your body temp, keeping you cool when it's hot and warm when it's brisk.",
+                title: "Thermoregulasi",
+                desc: "Bisa adaptasi sama suhu badan lo, bikin adem pas panas dan anget pas dingin.",
               },
               {
                 title: "4-Way Stretch",
-                desc: "Moves exactly how you move without ever bagging out at the knees or elbows.",
+                desc: "Fleksibel ngikutin movement lo tanpa bikin kendor di bagian lutut atau sikut.",
               },
               {
                 title: "Zero Pilling",
-                desc: "Treated with a proprietary bio-wash to ensure a smooth face wash after wash.",
+                desc: "Di-treat pakai bio-wash eksklusif biar permukaannya tetap smooth meskipun sering dicuci.",
               },
             ].map((feature, i) => (
               <motion.div

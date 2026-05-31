@@ -257,7 +257,9 @@
   transform: rotate(-10deg);
 }
 
-/* --- RESPONSIVE --- */
+/* ================================================================
+   PROFILE — MOBILE RESPONSIVE
+   ================================================================ */
 @media (max-width: 1024px) {
   .profile-dashboard {
     padding: 3rem 2rem;
@@ -266,30 +268,126 @@
 }
 
 @media (max-width: 768px) {
+  /* ── Hero ── */
   .profile-hero {
-    padding: 8rem 1.5rem 4rem;
+    padding: 7rem 1.5rem 3.5rem;
   }
+
   .profile-name {
-    font-size: 3.5rem;
+    font-size: clamp(2.5rem, 12vw, 3.8rem);
+    letter-spacing: -0.05em;
   }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    font-size: 1.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  /* ── Dashboard layout ── */
   .profile-dashboard {
     flex-direction: column;
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.2rem;
+    gap: 0;
   }
+
+  /* ── Sidebar → horizontal scrollable tab bar ── */
   .profile-sidebar {
     position: static;
     flex: none;
     width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    padding-bottom: 0;
+    margin-bottom: 2rem;
+    top: auto;
   }
+
   .profile-sidebar-nav {
     flex-direction: row;
     overflow-x: auto;
+    gap: 0.3rem;
     padding-bottom: 1rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
+
+  .profile-sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
   .profile-tab {
     white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0.65rem 1.2rem;
+    font-size: 0.82rem;
+    border-radius: 2rem;
   }
+
+  .profile-tab.active {
+    background: #111;
+    color: #fff;
+    border-color: transparent;
+  }
+
+  .profile-logout-wrap {
+    display: none; /* hide sidebar logout on mobile, use tab instead */
+  }
+
+  /* ── Content area ── */
+  .profile-content {
+    padding: 0;
+  }
+
+  /* ── Info grid → 1 col ── */
   .profile-info-grid {
     grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── Order cards → stack nicely ── */
+  .profile-order-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1.2rem;
+  }
+
+  .profile-order-card > div:last-child {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* ── Address cards ── */
+  .address-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Form inputs ── */
+  .profile-info-form {
+    max-width: 100%;
+  }
+
+  .profile-submit-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-name {
+    font-size: clamp(2rem, 14vw, 3rem);
+  }
+
+  .profile-hero {
+    padding: 6.5rem 1.2rem 3rem;
+  }
+
+  .profile-section-title {
+    font-size: 0.62rem;
   }
 }

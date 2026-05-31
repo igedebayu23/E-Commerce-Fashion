@@ -18,36 +18,36 @@ export const TEAM: TeamMember[] = [
   {
     name: "Fifin Agustiana",
     role: "Creative Director & Co-Founder",
-    bio: "A visionary in modern fashion aesthetics, Fifin brings an eye for minimalist elegance and textile innovation that defines every Novarium piece.",
+    bio: "Seorang visioner di dunia modern fashion aesthetics, Fifin punya mata tajam buat minimalist elegance dan textile innovation yang jadi ciri khas setiap piece Novarium.",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop&crop=face",
     accent: "#9b51e0",
   },
   {
     name: "I Gede Bayu Pamungkas",
     role: "Chief Executive Officer",
-    bio: "With a strategic mind and passion for disrupting fast fashion, Bayu drives Novarium's mission to make premium essentials accessible to everyone.",
+    bio: "Dengan strategic mindset dan passion buat ngeguncang fast fashion, Bayu mendorong misi Novarium biar premium essentials bisa diakses semua orang.",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
     accent: "#9cad8f",
   },
   {
     name: "Zilal Afwu Rahman",
     role: "Head of Product Design",
-    bio: "Zilal is the architect behind Novarium's signature silhouettes. Every cut, stitch, and drape is meticulously crafted under his watchful design philosophy.",
+    bio: "Zilal adalah arsitek di balik signature silhouettes Novarium. Setiap potongan, jahitan, dan jatuhnya kain dirancang dengan sangat detail di bawah design philosophy-nya.",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=400&fit=crop&crop=face",
     accent: "#27ae60",
   },
   {
     name: "Safdar Rahman",
     role: "Chief Technology Officer",
-    bio: "Safdar bridges the gap between fashion and technology, building the digital infrastructure that powers Novarium's seamless e-commerce experience.",
+    bio: "Safdar nyambungin antara fashion dan teknologi, membangun digital infrastructure yang ngepowerin e-commerce experience Novarium yang seamless.",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
     accent: "#e05177",
   },
 ];
 
 export const VALUES: CompanyValue[] = [
-  { icon: "✦", title: "Craftsmanship", desc: "Every piece is engineered with precision — from the first thread to the final press." },
-  { icon: "◆", title: "Sustainability", desc: "Conscious production meets modern design, built to last beyond a single season." },
-  { icon: "●", title: "Innovation", desc: "We push boundaries in fabric technology, fit science, and the way you shop." },
-  { icon: "▲", title: "Community", desc: "Novarium isn't a brand — it's a culture of people who refuse to settle for ordinary." },
+  { icon: "✦", title: "Craftsmanship", desc: "Setiap piece dibikin dengan presisi — dari benang pertama sampai press terakhir." },
+  { icon: "◆", title: "Sustainability", desc: "Produksi yang conscious ketemu modern design, dibuat buat tahan lebih dari satu season." },
+  { icon: "●", title: "Inovasi", desc: "Kita push boundaries di fabric technology, fit science, dan cara lo belanja." },
+  { icon: "▲", title: "Komunitas", desc: "Novarium bukan cuma brand — ini culture dari orang-orang yang nolak jadi biasa aja." },
 ];

@@ -10,7 +10,7 @@ COPY packages ./packages
 COPY services/order-service ./services/order-service
 
 # Install all dependencies using workspaces
-RUN npm install
+RUN npm config set fetch-retries 5 && npm config set fetch-retry-mintimeout 20000 && npm config set fetch-retry-maxtimeout 120000 && npm config set maxsockets 5 && npm install
 
 # Generate Prisma Client specifically for order-service
 WORKDIR /app/services/order-service

@@ -202,7 +202,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                 {/* Size selector */}
                 {sizeOptions.length > 0 && (
                   <>
-                    <div className="modal-size-label">Select Size</div>
+                    <div className="modal-size-label">Pilih Ukuran</div>
                     <div className="modal-sizes-row">
                       {sizeOptions.map((size) => {
                         const isOutOfStock = (stockBySize[size as string] ?? 0) <= 0;
@@ -228,7 +228,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                 {/* Color selector */}
                 {colorOptions.length > 0 && (
                   <>
-                    <div className="modal-colors-label">Color</div>
+                    <div className="modal-colors-label">Warna</div>
                     <div className="modal-colors-row">
                       {colorOptions.map((color: any) => (
                         <button
@@ -269,9 +269,9 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                       transition={{ duration: 0.2 }}
                     >
                       {added
-                        ? "Added to Cart ✓"
+                        ? "Masuk ke Cart ✓"
                         : user
-                          ? "Add to Cart"
+                          ? "Masuk ke Cart"
                           : "Login untuk Membeli"}
                     </motion.span>
                   </AnimatePresence>
@@ -354,7 +354,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                     lineHeight: 1.5,
                   }}
                 >
-                  Free shipping on orders above Rp500k · Easy 30-day returns
+                  Gratis ongkir belanja di atas Rp500k · Gampang balikin dalam 30 hari
                 </div>
 
                 <ProductReviews productId={product.id.toString()} />

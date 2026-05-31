@@ -13,7 +13,7 @@ COPY packages/shared/package.json ./packages/shared/
 COPY packages/contracts/package.json ./packages/contracts/
 COPY packages/database/package.json ./packages/database/
 
-RUN npm ci
+RUN npm config set fetch-retries 5 && npm config set fetch-retry-mintimeout 20000 && npm config set fetch-retry-maxtimeout 120000 && npm config set maxsockets 5 && npm ci
 
 # Stage 2: Builder
 FROM node:24.15.0-alpine AS builder
@@ -43,7 +43,7 @@ COPY packages/shared/package.json ./packages/shared/
 COPY packages/contracts/package.json ./packages/contracts/
 COPY packages/database/package.json ./packages/database/
 
-RUN npm ci --omit=dev --ignore-scripts
+RUN npm config set fetch-retries 5 && npm config set fetch-retry-mintimeout 20000 && npm config set fetch-retry-maxtimeout 120000 && npm config set maxsockets 5 && npm ci --omit=dev --ignore-scripts
 
 # Stage 4: Runner
 FROM node:24.15.0-alpine AS runner

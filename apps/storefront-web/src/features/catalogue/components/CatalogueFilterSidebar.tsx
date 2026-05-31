@@ -47,22 +47,24 @@ export default function CatalogueFilterSidebar({
       {/* Category section */}
       <div className="sidebar-section">
         <div className="sidebar-section-label">Category</div>
-        {CATEGORIES.map((cat, i) => (
-          <motion.button
-            key={cat.key}
-            className={`sidebar-pill ${activeCategory === cat.key ? "active" : ""}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
-            onClick={() => onCategoryChange(cat.key)}
-            whileTap={{ scale: 0.97 }}
-          >
-            {cat.label}
-            <span className="count-badge">
-              {counts[cat.key] ?? 0}
-            </span>
-          </motion.button>
-        ))}
+        <div className="sidebar-pills-row">
+          {CATEGORIES.map((cat, i) => (
+            <motion.button
+              key={cat.key}
+              className={`sidebar-pill ${activeCategory === cat.key ? "active" : ""}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 + i * 0.07 }}
+              onClick={() => onCategoryChange(cat.key)}
+              whileTap={{ scale: 0.97 }}
+            >
+              {cat.label}
+              <span className="count-badge">
+                {counts[cat.key] ?? 0}
+              </span>
+            </motion.button>
+          ))}
+        </div>
       </div>
 
       {/* Divider */}
@@ -82,31 +84,30 @@ export default function CatalogueFilterSidebar({
       {/* Sort section */}
       <div className="sidebar-section">
         <div className="sidebar-section-label">Sort by</div>
-        {SORT_OPTIONS.map((opt, i) => (
-          <motion.button
-            key={opt.key}
-            className={`sidebar-pill ${sortOrder === opt.key ? "active" : ""}`}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 + i * 0.07 }}
-            onClick={() => onSortChange(opt.key)}
-            whileTap={{ scale: 0.97 }}
-          >
-            {opt.label}
-          </motion.button>
-        ))}
+        <div className="sidebar-pills-row">
+          {SORT_OPTIONS.map((opt, i) => (
+            <motion.button
+              key={opt.key}
+              className={`sidebar-pill ${sortOrder === opt.key ? "active" : ""}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 + i * 0.07 }}
+              onClick={() => onSortChange(opt.key)}
+              whileTap={{ scale: 0.97 }}
+            >
+              {opt.label}
+            </motion.button>
+          ))}
+        </div>
       </div>
 
-      {/* Decorative info card — neumorphism on light surface */}
+      {/* Decorative info card — hidden on mobile via CSS */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="neo-card"
-        style={{
-          marginTop: "2rem",
-          padding: "1.4rem 1.5rem",
-        }}
+        className="neo-card sidebar-info-card"
+        style={{ marginTop: "2rem", padding: "1.4rem 1.5rem" }}
       >
         <div style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#111", marginBottom: "0.6rem" }}>
           Free Shipping

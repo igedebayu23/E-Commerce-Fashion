@@ -50,10 +50,10 @@ export default function AboutStory({ studioModel1 }: AboutStoryProps) {
             }}
           >
             <span style={{ fontSize: "0.7rem", fontWeight: 800, letterSpacing: "0.3em", color: "#999", textTransform: "uppercase", display: "block", marginBottom: "1rem" }}>
-              Our Philosophy
+              Filosofi Kita
             </span>
             <p style={{ fontSize: "1.1rem", color: "#111", lineHeight: 1.5, fontWeight: 500, letterSpacing: "-0.01em" }}>
-              &quot;Simplicity is the ultimate sophistication in every stitch.&quot;
+              &quot;Simplicity adalah ultimate sophistication di setiap jahitan.&quot;
             </p>
           </motion.div>
         </div>
@@ -63,7 +63,7 @@ export default function AboutStory({ studioModel1 }: AboutStoryProps) {
           
           <div style={{ marginTop: "3rem", marginBottom: "4rem", overflow: "visible" }}>
             <RevealText 
-              text="Engineered for the modern daily grind." 
+              text="Dibuat buat lo yang jalanin modern daily grind." 
               style={{ 
                 fontSize: "clamp(2.5rem, 5vw, 4.5rem)", 
                 fontWeight: 800, 
@@ -80,10 +80,10 @@ export default function AboutStory({ studioModel1 }: AboutStoryProps) {
             transition={{ delay: 0.8, duration: 0.8 }}
             style={{ fontSize: "1.15rem", lineHeight: 1.7, color: "#666", fontWeight: 400, maxWidth: "480px" }}
           >
-            Novarium was born in a small studio with a big vision: to create garments 
-             that adapt to your life, not the other way around. We combine technical 
-             fabrics with tailored silhouettes to deliver essentials that feel 
-             as good as they look.
+            Novarium lahir di studio kecil dengan visi gede: bikin pakaian yang 
+            adaptasi sama hidup lo, bukan sebaliknya. Kita mix technical fabrics 
+            dengan tailored silhouettes buat ngasih essentials yang asik dipakai 
+            sekaligus dilihat.
           </motion.p>
 
           <motion.div

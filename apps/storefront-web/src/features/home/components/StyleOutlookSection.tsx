@@ -36,7 +36,7 @@ export default function StyleOutlookSection() {
       }}
     >
       {/* Header Row */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "4vw" }}>
+      <div className="style-outlook-header-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "4vw" }}>
         <div style={{ flex: 1 }}>
           <SectionLabel number="04" color="rgba(255,255,255,0.8)" />
         </div>
@@ -61,7 +61,7 @@ export default function StyleOutlookSection() {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             style={{ maxWidth: "250px", fontSize: "0.95rem", lineHeight: 1.5, opacity: 0.8, textAlign: "right" }}
           >
-            Make simplicity your boldest statement, experience crafted essentials with a excellent purpose.
+            Bikin simplicity jadi statement lo paling berani, cobain crafted essentials dengan purpose yang mantap.
           </motion.p>
         </div>
       </div>

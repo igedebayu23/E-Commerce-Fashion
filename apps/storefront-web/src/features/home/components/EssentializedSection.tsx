@@ -84,30 +84,11 @@ export default function EssentializedSection() {
     <section ref={containerRef} className="essentialized-section">
       {!currentTee || !currentJeans ? (
         <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-           <p style={{ opacity: 0.5 }}>Loading Essentials...</p>
+           <p style={{ opacity: 0.5 }}>Lagi Loading Essentials...</p>
         </div>
       ) : (
         <>
-          <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="main-navbar" style={{ color: "#111" }}>
-          <div style={{ display: "flex", gap: "2.5rem" }}>
-            <Link href="/catalogue" style={{ color: "inherit" }}>Male</Link>
-            <Link href="/about" style={{ color: "inherit" }}>About Us</Link>
-          </div>
-          <Link href="/" className="brand" style={{ color: "inherit" }}>
-            Novarium
-          </Link>
-          <div style={{ display: "flex", gap: "2.5rem", alignItems: "center" }}>
-            <Link href="/profile" style={{ color: "inherit" }}>Profile</Link>
-            <Link href="/catalogue/cart" style={{ color: "inherit" }}>Cart</Link>
-          </div>
-        </div>
-      </motion.div>
+
 
       <div style={{ position: "relative", width: "100%", paddingBottom: "5vw" }}>
         <motion.div ref={titleRef} style={{ y: yTitle, position: "absolute", top: "2vw", left: 0, right: 0, zIndex: 6 }}>

@@ -4,10 +4,9 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { getProducts } from "@/shared/actions/catalogue";
+import { getTees, getJeans } from "@/shared/actions/catalogue";
 import type { CatalogueProduct } from "@/features/catalogue/types";
 
-import FilterBar from "@/shared/components/ui/FilterBar";
 import ProductCard from "@/shared/components/ui/ProductCard";
 import AnimatedText from "@/shared/components/ui/AnimatedText";
 import SectionLabel from "@/shared/components/ui/SectionLabel";
@@ -21,7 +20,8 @@ export default function DiscoverSection() {
   
   useEffect(() => {
     async function loadProducts() {
-      const data = await getProducts();
+      const [tees, jeans] = await Promise.all([getTees(), getJeans()]);
+      const data = [...tees, ...jeans];
       setProducts(data);
       // Start in the middle of the triple-list for infinite feel
       setCurrentIndex(data.length > 0 ? data.length : 0);
@@ -93,7 +93,6 @@ export default function DiscoverSection() {
 
   return (
     <section ref={sectionRef} className="discover-section">
-      <FilterBar />
 
       {/* Content */}
       <div className="discover-content">
@@ -102,7 +101,7 @@ export default function DiscoverSection() {
           <SectionLabel number="02" color="#111" />
 
           <AnimatedText text="Discover" as="h3" baseDelay={0} />
-          <AnimatedText text="Reimagined" as="h3" baseDelay={0.3} />
+          <AnimatedText text="Koleksi Kami" as="h3" baseDelay={0.3} />
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -110,7 +109,7 @@ export default function DiscoverSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            From tees to hoodies, every piece is crafted with next-gen fabric innovation and future-forward comfort.
+            Dari tees sampai hoodies, setiap piece dibuat dengan fabric innovation yang bikin lo nyaman seharian.
           </motion.p>
 
           <motion.button
@@ -123,7 +122,7 @@ export default function DiscoverSection() {
             whileTap={{ scale: 0.97 }}
             onClick={() => router.push("/catalogue")}
           >
-            Explore All
+            Explore Semua
             <span className="arrow-circle">
               <ArrowUpRight size={14} />
             </span>
@@ -152,7 +151,7 @@ export default function DiscoverSection() {
           </div>
         </motion.div>
 
-        {/* Right: Product Cards Slider */}
+        {/* Right: Product Cards Slider (desktop only) */}
         <div className="discover-right-container">
           <motion.div 
             className="discover-right" 
@@ -172,6 +171,17 @@ export default function DiscoverSection() {
               <p className="loading-text">Loading products...</p>
             )}
           </motion.div>
+        </div>
+
+        {/* Mobile 2-column grid (hidden on desktop via CSS) */}
+        <div className="discover-mobile-grid">
+          {products.slice(0, 6).map((product, index) => (
+            <ProductCard
+              key={`mobile-${product.id}`}
+              product={product}
+              index={index}
+            />
+          ))}
         </div>
       </div>
     </section>

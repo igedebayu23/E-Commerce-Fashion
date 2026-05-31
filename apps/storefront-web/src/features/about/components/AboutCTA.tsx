@@ -24,12 +24,12 @@ export default function AboutCTA() {
             textShadow: "0 10px 30px rgba(0,0,0,0.1)"
           }}
         >
-          Craft Your Essential.
+          Bangun Essential Lo Sendiri.
         </motion.h2>
         
         <p className={styles.aboutCtaDescription}>
-          Join the community of those who value quality over quantity. 
-          Your perfect wardrobe starts here.
+          Gabung sama komunitas yang lebih milih kualitas daripada kuantitas. 
+          Wardrobe perfect lo mulai dari sini.
         </p>
 
         <MotionLink
@@ -52,7 +52,7 @@ export default function AboutCTA() {
             transition: "all 0.4s ease"
           }}
         >
-          Explore Collection
+          Explore Koleksi
         </MotionLink>
       </div>
     </section>

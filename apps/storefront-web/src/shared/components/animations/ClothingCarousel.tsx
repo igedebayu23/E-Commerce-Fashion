@@ -73,6 +73,7 @@ export default function ClothingCarousel({
               exit={{ opacity: 0, scale: 0.95, y: -15 }}
               transition={{ duration: 0.4 }}
               style={{ display: "flex", gap: "2rem", width: "100%", margin: 0 }}
+              className="essentialized-mobile-grid"
             >
               <div
                 className="floating-product-card"
