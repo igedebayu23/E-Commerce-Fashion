@@ -1,5 +1,5 @@
 # Stage 1: Dependencies
-FROM node:24.15.0-alpine AS deps
+FROM node:20-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
@@ -12,10 +12,10 @@ COPY services/customer-service/package.json ./services/customer-service/
 COPY packages/contracts/package.json ./packages/contracts/
 COPY packages/database/package.json ./packages/database/
 
-RUN npm config set fetch-retries 5 && npm config set fetch-retry-mintimeout 20000 && npm config set fetch-retry-maxtimeout 120000 && npm config set maxsockets 5 && npm ci
+RUN npm install --no-audit --no-fund
 
 # Stage 2: Builder
-FROM node:24.15.0-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -31,7 +31,7 @@ ENV NEXT_PUBLIC_GATEWAY_URL=$NEXT_PUBLIC_GATEWAY_URL
 RUN npm run build -w project
 
 # Stage 3: Runner
-FROM node:24.15.0-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 
