@@ -8,7 +8,10 @@ if (!process.env.DATABASE_URL && process.env.ADMIN_DATABASE_URL) {
 }
 
 const connectionString = process.env.DATABASE_URL;
-const pool = new Pool({ connectionString });
+const pool = new Pool({ 
+  connectionString,
+  ssl: { rejectUnauthorized: false }
+});
 const adapter = new PrismaPg(pool);
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };

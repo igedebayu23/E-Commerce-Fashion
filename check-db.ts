@@ -1,20 +1,19 @@
-import dotenv from 'dotenv';
-dotenv.config();
-process.env.DATABASE_URL = process.env.CORE_DATABASE_URL;
+import { Pool } from 'pg';
 
-async function checkDb() {
-  try {
-    const { default: prisma } = await import('./services/commerce-service/src/db/client.js');
-    const products = await prisma.product.findMany();
-    console.log(`Found ${products.length} products.`);
-    if (products.length > 0) {
-      console.log(products[0]);
-    }
-    const categories = await prisma.category.findMany();
-    console.log(`Found ${categories.length} categories.`);
-  } catch (e) {
-    console.error(e);
-  }
+const connectionString = "postgresql://neondb_owner:npg_Xmay8OY6wKPL@ep-square-pine-ao2chbfh-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require";
+const pool = new Pool({
+  connectionString,
+  ssl: { rejectUnauthorized: false }
+});
+
+async function main() {
+  console.log("Connecting...");
+  const client = await pool.connect();
+  console.log("Connected!");
+  const res = await client.query('SELECT NOW()');
+  console.log(res.rows);
+  client.release();
+  await pool.end();
 }
 
-checkDb();
+main().catch(console.error);

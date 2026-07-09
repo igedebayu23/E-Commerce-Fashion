@@ -101,7 +101,7 @@ export default function ProductReviews({ productId }: ProductReviewsProps) {
                 ))}
               </div>
             </div>
-            {review.comment && <p className="review-comment-text">{review.comment}</p>}
+            {review.comment && <div className="review-comment-text">{review.comment}</div>}
           </div>
         ))}
       </div>

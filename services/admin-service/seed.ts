@@ -1,9 +1,9 @@
-import { prisma } from './src/db/client';
-import bcrypt from 'bcryptjs';
 import * as dotenv from 'dotenv';
 import path from 'path';
-
 dotenv.config({ path: path.join(process.cwd(), '../../.env') });
+
+import { prisma } from './src/db/client';
+import bcrypt from 'bcryptjs';
 
 async function main() {
   const email = 'admin@novarium.com';

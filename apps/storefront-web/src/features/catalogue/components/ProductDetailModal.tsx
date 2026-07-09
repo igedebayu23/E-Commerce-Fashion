@@ -197,7 +197,7 @@ export default function ProductDetailModal({ product, onClose }: Props) {
                   </span>
                 </div>
 
-                <p className="modal-product-desc">{product.description}</p>
+                <div className="modal-product-desc" dangerouslySetInnerHTML={{ __html: product.description || '' }}></div>
 
                 {/* Size selector */}
                 {sizeOptions.length > 0 && (
