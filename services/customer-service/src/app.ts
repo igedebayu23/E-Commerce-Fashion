@@ -29,6 +29,6 @@ app.use('/api/customer/checkout', checkoutRoutes);
 app.use('/api/customer/orders', orderRoutes);
 
 // Error Handler
-app.use(errorHandler);
+app.use(errorHandler as any);
 
 export default app;

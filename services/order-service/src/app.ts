@@ -19,6 +19,6 @@ app.use('/api/orders/customer', customerRoutes);
 app.use('/api/orders/admin', adminRoutes);
 
 // Error Handler
-app.use(errorHandler);
+app.use(errorHandler as any);
 
 export default app;

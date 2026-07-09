@@ -16,6 +16,6 @@ app.get('/health', (req, res) => {
 app.use('/api/admin', routes);
 
 // Error Handler
-app.use(errorHandler);
+app.use(errorHandler as any);
 
 export default app;

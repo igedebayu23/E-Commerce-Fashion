@@ -39,6 +39,6 @@ app.use("/api/commerce/admin/uploads", uploadRoutes);
 app.use("/api/commerce/health", healthRoutes);
 
 // Error Handler
-app.use(errorHandler);
+app.use(errorHandler as any);
 
 export default app;
