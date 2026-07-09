@@ -7,6 +7,8 @@ export function createCorsMiddleware(allowedOrigins: string[]) {
       if (!origin) return callback(null, true);
       // Izinkan semua localhost saat development
       if (origin.includes('localhost')) return callback(null, true);
+      // Izinkan semua domain Vercel (karena URL Vercel belum diketahui)
+      if (origin.endsWith('.vercel.app')) return callback(null, true);
       // Cek whitelist
       if (allowedOrigins.includes(origin)) return callback(null, true);
       callback(new Error(`CORS tidak diizinkan: ${origin}`));
