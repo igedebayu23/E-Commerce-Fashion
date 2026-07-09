@@ -15,11 +15,14 @@ export const dashboardService = {
       orderApi.getOrders(fetch, 5)
     ]);
 
+    const rawAnalytics = analytics.data || {};
+    
     return {
-      analytics: analytics.data || {
-        summary: { totalRevenue: 0, revenueGrowth: 0 },
-        finance: { grossProfit: 0 },
-        successRate: 100
+      analytics: {
+        ...rawAnalytics,
+        summary: rawAnalytics.summary || { totalRevenue: 0, revenueGrowth: 0 },
+        finance: rawAnalytics.finance || { grossProfit: 0 },
+        successRate: rawAnalytics.successRate || 100
       },
       recentOrders: (orders.data || []).slice(0, 5)
     };

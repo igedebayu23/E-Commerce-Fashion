@@ -16,7 +16,7 @@
         <div class="form-side">
             <div class="form-container">
                 <form 
-                    action="?/login"
+                    action="/login?/login"
                     method="POST" 
                     use:enhance
                 >
@@ -60,14 +60,6 @@
 </div>
 
 <style>
-    :global(body) {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: #0a0a0a;
-        font-family: 'Inter', sans-serif;
-    }
-
     .login-wrapper {
         display: flex;
         justify-content: center;
