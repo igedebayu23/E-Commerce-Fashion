@@ -1,5 +1,5 @@
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useEffect, useCallback, useMemo } from "react";
+import { useEffect, useCallback, useMemo, useState } from "react";
 import { useAuth } from "@/core/providers/AuthContext";
 import { useProfileData } from "@/core/providers/ProfileDataContext";
 
