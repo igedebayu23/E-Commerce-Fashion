@@ -1,7 +1,7 @@
 import { env } from './config/env';
 import app from "./app";
 
-const port = process.env.PORT || env.PORT;
-app.listen(port as number, "0.0.0.0", () => {
+const port = Number(process.env.PORT || env.PORT || 3001);
+app.listen(port, "0.0.0.0", () => {
   console.log(`Commerce Service listening on port ${port}`);
 });
